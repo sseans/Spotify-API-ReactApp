@@ -14,14 +14,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
     padding: 0;
     margin: 0;
-  }
-  ::selection {
-    background-color: var(--lightest-navy);
-    color: var(--lightest-slate);
-  }
-  :focus {
-    outline: 2px dashed var(--green);
-    outline-offset: 3px;
+        font-family: 'Roboto', sans-serif;
   }
   /* Scrollbar Styles */
   html {
