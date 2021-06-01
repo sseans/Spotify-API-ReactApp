@@ -6,11 +6,14 @@ const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
     width: 100%;
+    font-family: 'Roboto', sans-serif;
   }
   *,
   *:before,
   *:after {
     box-sizing: inherit;
+    padding: 0;
+    margin: 0;
   }
   ::selection {
     background-color: var(--lightest-navy);
@@ -40,12 +43,15 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     width: 100%;
     min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     background-color: var(--navy);
     color: var(--slate);
-    font-family: var(--font-sans);
+    font-family: 'Roboto', sans-serif;
     font-size: var(--fz-xl);
     line-height: 1.3;
     @media (max-width: 480px) {
