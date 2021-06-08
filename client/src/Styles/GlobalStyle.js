@@ -71,6 +71,7 @@ const GlobalStyle = createGlobalStyle`
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    width: 100%;
     display: grid;
     grid-template-rows: 1fr auto;
     grid-template-columns: 100%;

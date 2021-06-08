@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const SearchBox = styled.input`
   height: 30px;
-  width: 200px;
+  width: 100%;
   border-radius: 15px;
   background-color: #fff;
   border: none;
@@ -17,16 +17,24 @@ const SearchBox = styled.input`
   }
 `;
 
+const SearchContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 export default function Search({ search, setSearch }) {
   return (
     <div>
       <form>
-        <SearchBox
-          type="text"
-          placeholder="Search Songs"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <SearchContainer>
+          <SearchBox
+            type="text"
+            placeholder="Search Songs"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </SearchContainer>
       </form>
     </div>
   );

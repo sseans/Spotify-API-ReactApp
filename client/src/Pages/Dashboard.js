@@ -2,9 +2,34 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../Hooks/useAuth.js";
 import SpotifyWebApi from "spotify-web-api-node";
 import ClipLoader from "react-spinners/ClipLoader";
-import Search from "../Components/Dashboard/Search";
-import SearchResults from "../Components/Dashboard/SearchResults.js";
-// import styled from "styled-components";
+import Search from "../Components/Dashboard/Search/Search";
+import SearchResult from "../Components/Dashboard/Search/SearchResult.js";
+import styled from "styled-components";
+
+const SearchContainer = styled.div`
+  position: fixed;
+  top: 12.5px;
+  width: 100%;
+`;
+
+const SearchResultsContainer = styled.div`
+  max-height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--navy);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--dark-slate);
+    border: 3px solid var(--navy);
+    border-radius: 10px;
+  }
+`;
 
 const spotifyApi = new SpotifyWebApi({
   clientId: "790b0e732d4f4ac397b1207b4a54b1da",
@@ -71,11 +96,15 @@ export default function Dashboard({ code }) {
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
-    <div>
+    <SearchContainer>
       <Search search={search} setSearch={setSearch} />
-      {searchResults.map((track) => {
-        return <SearchResults key={track.uri} track={track} />;
-      })}
-    </div>
+      {search ? (
+        <SearchResultsContainer>
+          {searchResults.map((track) => {
+            return <SearchResult key={track.uri} track={track} />;
+          })}
+        </SearchResultsContainer>
+      ) : null}
+    </SearchContainer>
   );
 }
