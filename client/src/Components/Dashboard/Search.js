@@ -8,7 +8,7 @@ const SearchBox = styled.input`
   background-color: #fff;
   border: none;
   font-size: 1rem;
-  padding: 0 10px;
+  padding: 0 12.5px;
   &::placeholder {
     font-size: 1rem;
   }
@@ -17,8 +17,7 @@ const SearchBox = styled.input`
   }
 `;
 
-export default function Search() {
-  const [search, setSearch] = useState();
+export default function Search({ search, setSearch }) {
   return (
     <div>
       <form>
