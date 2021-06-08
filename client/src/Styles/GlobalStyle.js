@@ -67,6 +67,9 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   #root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
     display: grid;
     grid-template-rows: 1fr auto;

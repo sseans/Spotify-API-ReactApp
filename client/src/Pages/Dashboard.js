@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../Hooks/useAuth.js";
 import SpotifyWebApi from "spotify-web-api-node";
 import ClipLoader from "react-spinners/ClipLoader";
+import Search from "../Components/Dashboard/Search";
 // import styled from "styled-components";
 
 const spotifyApi = new SpotifyWebApi({
@@ -30,8 +31,6 @@ export default function Dashboard({ code }) {
         });
         console.log(tracks);
         console.log("Some information about the authenticated user", data);
-        console.log(`name`, data.body.items[0].track.name);
-        console.log(`artist`, data.body.items[0].track.artists[0].name);
       },
       (err) => {
         console.log("Something went wrong!", err);
@@ -39,11 +38,11 @@ export default function Dashboard({ code }) {
     );
   }
 
-  console.log("Dashboard Rendered");
-
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
-    <div>hello</div>
+    <div>
+      <Search />
+    </div>
   );
 }

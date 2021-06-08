@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function useAuth(code) {
-  const [accessToken, setAccessToken] = useState();
-  const [refreshToken, setRefreshToken] = useState();
-  const [expiresIn, setExpiresIn] = useState();
+  const [authObject, setAuthObject] = useState({});
 
   useEffect(() => {
     axios
@@ -12,9 +10,11 @@ export default function useAuth(code) {
         code,
       })
       .then((res) => {
-        setAccessToken(res.data.accessToken);
-        setRefreshToken(res.data.refreshToken);
-        setExpiresIn(res.data.expiresIn);
+        setAuthObject({
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+          setExpiresIn: res.data.expiresIn,
+        });
         window.history.pushState({}, null, "/");
       })
       .catch(() => {
@@ -23,23 +23,26 @@ export default function useAuth(code) {
   }, [code]);
 
   useEffect(() => {
-    if (!refreshToken || !expiresIn) return;
+    if (!authObject.refreshToken || !authObject.expiresIn) return;
     const interval = setInterval(() => {
       axios
         .post("http://localhost:3001/refresh", {
-          refreshToken,
+          refreshToken: authObject.refreshToken,
         })
         .then((res) => {
-          setAccessToken(res.data.accessToken);
-          setExpiresIn(res.data.expiresIn);
+          setAuthObject({
+            accessToken: res.data.accessToken,
+            refreshToken: authObject.refreshToken,
+            setExpiresIn: res.data.expiresIn,
+          });
         })
         .catch(() => {
           window.location = "/";
         });
-    }, (expiresIn - 60) * 1000);
+    }, (authObject.expiresIn - 60) * 1000);
 
     return () => clearInterval(interval);
-  }, [refreshToken, expiresIn]);
+  }, [authObject.refreshToken, authObject.expiresIn]);
 
-  return accessToken;
+  return authObject.accessToken;
 }
