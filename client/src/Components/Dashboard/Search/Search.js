@@ -1,6 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
+const Wrapper = styled.div`
+  width: 100%;
+`;
+
+const FormWrapper = styled.form`
+  width: 100%;
+`;
+
 const SearchBox = styled.input`
   height: 30px;
   width: 100%;
@@ -19,14 +27,20 @@ const SearchBox = styled.input`
 
 const SearchContainer = styled.div`
   width: 100%;
+  /* padding: 0 15px; */
   display: flex;
   justify-content: center;
 `;
 
-export default function Search({ search, setSearch }) {
+export default function Search({ search, setSearch, pickFirstTrack }) {
   return (
-    <div>
-      <form>
+    <Wrapper>
+      <FormWrapper
+        onSubmit={(e) => {
+          e.preventDefault();
+          pickFirstTrack();
+        }}
+      >
         <SearchContainer>
           <SearchBox
             type="text"
@@ -35,7 +49,7 @@ export default function Search({ search, setSearch }) {
             onChange={(e) => setSearch(e.target.value)}
           />
         </SearchContainer>
-      </form>
-    </div>
+      </FormWrapper>
+    </Wrapper>
   );
 }

@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
     background: var(--navy);
   }
   body::-webkit-scrollbar-thumb {
-    background-color: var(--dark-slate);
+    background-color: var(--dark-slate-green);
     border: 3px solid var(--navy);
     border-radius: 10px;
   }
@@ -42,8 +42,8 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: var(--navy);
-    color: var(--slate);
+    background-color: var(--dark-slate-green);
+    color: var(--gold-crayola);
     font-family: 'Roboto', sans-serif;
     font-size: var(--fz-xl);
     line-height: 1.3;
@@ -72,9 +72,6 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     min-height: 100vh;
     width: 100%;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    grid-template-columns: 100%;
   }
 `;
 

@@ -3,9 +3,10 @@ import styled from "styled-components";
 
 const SearchResultContainer = styled.div`
   display: flex;
-  width: 60%;
-  padding: 10px 10px;
+  width: 100%;
+  padding: 2.5px 0px;
   margin-top: 5px;
+  cursor: pointer;
 `;
 
 const TrackAlbumArtContainer = styled.div`
@@ -23,16 +24,22 @@ const TrackInfo = styled.div`
   justify-content: center;
   flex: 70%;
   h1 {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: white;
   }
   h2 {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 `;
 
-export default function SearchResults({ track }) {
+export default function SearchResults({ track, chooseTrack }) {
+  function handlePlay() {
+    chooseTrack(track);
+  }
+
   return (
-    <SearchResultContainer>
+    <SearchResultContainer onClick={handlePlay}>
       <TrackAlbumArtContainer>
         <TrackAlbumArt src={track.albumUrl} alt={track.artist} />
       </TrackAlbumArtContainer>

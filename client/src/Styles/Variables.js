@@ -2,6 +2,13 @@ import { css } from "styled-components";
 
 const variables = css`
   :root {
+    --very-dark-green: #293d3d;
+    --dark-slate-green: #354f4f;
+    --gold-crayola: #eec78c;
+    --burnt-sienna: #ee8062;
+    --mint-cream: #dce7e5;
+    --dark-sky-blue: #93b7be;
+
     --dark-navy: #020c1b;
     --navy: #0a192f;
     --light-navy: #112240;

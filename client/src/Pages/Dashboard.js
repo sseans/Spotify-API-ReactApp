@@ -5,16 +5,27 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Search from "../Components/Dashboard/Search/Search";
 import SearchResult from "../Components/Dashboard/Search/SearchResult.js";
 import styled from "styled-components";
+import Player from "../Components/Dashboard/Player/Player.js";
 
 const SearchContainer = styled.div`
   position: fixed;
   top: 12.5px;
-  width: 100%;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--very-dark-green);
+  border-radius: 15px;
+  margin: 0 15px;
 `;
 
 const SearchResultsContainer = styled.div`
+  position: relative;
+  margin: 2px 0;
+  height: calc(100% - 120px);
   max-height: 600px;
-  width: 100%;
+  overflow-y: scroll;
+  width: 90%;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -22,11 +33,11 @@ const SearchResultsContainer = styled.div`
     width: 12px;
   }
   &::-webkit-scrollbar-track {
-    background: var(--navy);
+    background: var(--very-dark-green);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--dark-slate);
-    border: 3px solid var(--navy);
+    background-color: var(--gold-crayola);
+    border: 3px solid var(--very-dark-green);
     border-radius: 10px;
   }
 `;
@@ -41,8 +52,18 @@ export default function Dashboard({ code }) {
   let [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState("");
+  const [playingTrack, setPlayingTrack] = useState();
 
   const accessToken = useAuth(code);
+
+  function chooseTrack(track) {
+    setPlayingTrack(track);
+    setSearch("");
+  }
+
+  function pickFirstTrack() {
+    chooseTrack(searchResults[0]);
+  }
 
   useEffect(() => {
     if (!accessToken) return;
@@ -55,7 +76,9 @@ export default function Dashboard({ code }) {
     if (!search) return setSearchResults([]);
     if (!accessToken) return;
 
+    let cancel = false;
     spotifyApi.searchTracks(search).then((res) => {
+      if (cancel) return;
       setSearchResults(
         res.body.tracks.items.map((track) => {
           const smallestAlbumImage = track.album.images.reduce(
@@ -75,6 +98,7 @@ export default function Dashboard({ code }) {
         })
       );
     });
+    return () => (cancel = true);
   }, [search, accessToken]);
 
   function fillData() {
@@ -96,15 +120,28 @@ export default function Dashboard({ code }) {
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
-    <SearchContainer>
-      <Search search={search} setSearch={setSearch} />
-      {search ? (
-        <SearchResultsContainer>
-          {searchResults.map((track) => {
-            return <SearchResult key={track.uri} track={track} />;
-          })}
-        </SearchResultsContainer>
-      ) : null}
-    </SearchContainer>
+    <>
+      <SearchContainer>
+        <Search
+          search={search}
+          setSearch={setSearch}
+          pickFirstTrack={pickFirstTrack}
+        />
+        {search ? (
+          <SearchResultsContainer>
+            {searchResults.map((track) => {
+              return (
+                <SearchResult
+                  chooseTrack={chooseTrack}
+                  key={track.uri}
+                  track={track}
+                />
+              );
+            })}
+          </SearchResultsContainer>
+        ) : null}
+      </SearchContainer>
+      <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+    </>
   );
 }
