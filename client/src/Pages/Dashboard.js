@@ -6,6 +6,7 @@ import Search from "../Components/Dashboard/Search/Search";
 import SearchResult from "../Components/Dashboard/Search/SearchResult.js";
 import styled from "styled-components";
 import Player from "../Components/Dashboard/Player/Player.js";
+import User from "../Components/User";
 
 const SearchContainer = styled.div`
   position: fixed;
@@ -53,6 +54,7 @@ export default function Dashboard({ code }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState("");
   const [playingTrack, setPlayingTrack] = useState();
+  const [userData, setUserData] = useState();
 
   const accessToken = useAuth(code);
 
@@ -102,17 +104,18 @@ export default function Dashboard({ code }) {
   }, [search, accessToken]);
 
   function fillData() {
-    spotifyApi.getMySavedTracks().then(
+    spotifyApi.getMe().then(
       (data) => {
-        data.body.items.map((x) => {
-          tracks.push(x.track);
-          return x;
+        console.log(data.body);
+        setUserData({
+          displayName: data.body.display_name,
+          userName: data.body.id,
+          followers: data.body.followers.total,
+          imageUrl: data.body.images[0].url,
         });
-        console.log(tracks);
-        console.log("Some information about the authenticated user", data);
       },
       (err) => {
-        console.log("Something went wrong!", err);
+        console.log("Error : .getMe() : ", err);
       }
     );
   }
@@ -122,6 +125,7 @@ export default function Dashboard({ code }) {
   ) : (
     <>
       <SearchContainer>
+        {userData ? <User userData={userData} /> : null}
         <Search
           search={search}
           setSearch={setSearch}
