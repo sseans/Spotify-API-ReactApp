@@ -47,7 +47,7 @@ const spotifyApi = new SpotifyWebApi({
   clientId: "790b0e732d4f4ac397b1207b4a54b1da",
 });
 
-const tracks = [];
+// const tracks = [];
 
 export default function Dashboard({ code }) {
   let [loading, setLoading] = useState(true);
@@ -71,7 +71,8 @@ export default function Dashboard({ code }) {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
     setLoading(false);
-    fillData();
+    fillUserData();
+    fillTopTrackData();
   }, [accessToken]);
 
   useEffect(() => {
@@ -103,10 +104,9 @@ export default function Dashboard({ code }) {
     return () => (cancel = true);
   }, [search, accessToken]);
 
-  function fillData() {
+  function fillUserData() {
     spotifyApi.getMe().then(
       (data) => {
-        console.log(data.body);
         setUserData({
           displayName: data.body.display_name,
           userName: data.body.id,
@@ -120,12 +120,23 @@ export default function Dashboard({ code }) {
     );
   }
 
+  function fillTopTrackData() {
+    spotifyApi.getMyTopArtists().then(
+      (data) => {
+        let topTracks = data.body.items;
+        console.log(topTracks);
+      },
+      (err) => {
+        console.log("Error : .getMe() : ", err);
+      }
+    );
+  }
+
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
     <>
       <SearchContainer>
-        {userData ? <User userData={userData} /> : null}
         <Search
           search={search}
           setSearch={setSearch}
@@ -145,6 +156,7 @@ export default function Dashboard({ code }) {
           </SearchResultsContainer>
         ) : null}
       </SearchContainer>
+      {userData ? <User userData={userData} /> : null}
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
     </>
   );

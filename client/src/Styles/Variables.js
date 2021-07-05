@@ -9,6 +9,9 @@ const variables = css`
     --mint-cream: #dce7e5;
     --dark-sky-blue: #93b7be;
 
+    --tan-crayola: #eea477;
+    --sun-ray: #eab971;
+
     --dark-navy: #020c1b;
     --navy: #0a192f;
     --light-navy: #112240;
