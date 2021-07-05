@@ -118,10 +118,7 @@ export default function Dashboard({ code }) {
         console.log("Error : .getMe() : ", err);
       }
     );
-  }
-
-  function fillTopTrackData() {
-    spotifyApi.getMyTopArtists().then(
+    spotifyApi.getMyTopArtists({ limit: 10 }).then(
       (data) => {
         let topTracks = data.body.items;
         console.log(topTracks);
@@ -131,6 +128,8 @@ export default function Dashboard({ code }) {
       }
     );
   }
+
+  function fillTopTrackData() {}
 
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
