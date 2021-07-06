@@ -7,6 +7,7 @@ import SearchResult from "../Components/Dashboard/Search/SearchResult.js";
 import styled from "styled-components";
 import Player from "../Components/Dashboard/Player/Player.js";
 import User from "../Components/User";
+import FavTracks from "../Components/Dashboard/FavTracks/FavTracks";
 
 const SearchContainer = styled.div`
   position: fixed;
@@ -43,6 +44,15 @@ const SearchResultsContainer = styled.div`
   }
 `;
 
+const ContentContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  border: red 1px solid;
+  display: flex;
+  padding: 0px 15px;
+  justify-content: space-between;
+`;
+
 const spotifyApi = new SpotifyWebApi({
   clientId: "790b0e732d4f4ac397b1207b4a54b1da",
 });
@@ -55,6 +65,7 @@ export default function Dashboard({ code }) {
   const [searchResults, setSearchResults] = useState("");
   const [playingTrack, setPlayingTrack] = useState();
   const [userData, setUserData] = useState();
+  const [topTracksData, setTopTracksData] = useState();
 
   const accessToken = useAuth(code);
 
@@ -125,6 +136,23 @@ export default function Dashboard({ code }) {
       (data) => {
         let topTracks = data.body.items;
         console.log(topTracks);
+        setTopTracksData([
+          ...topTracks.map((track) => {
+            let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
+              if (cv <= acc) {
+                cv = acc;
+              }
+              return acc;
+            }, 0);
+            return {
+              albumUrl: smallestAlbumArt,
+              albumName: track.album.name,
+              artist: track.artists[0].name,
+              trackName: track.name,
+              uri: track.uri,
+            };
+          }),
+        ]);
       },
       (err) => {
         console.log("Error : .getMe() : ", err);
@@ -157,6 +185,11 @@ export default function Dashboard({ code }) {
         ) : null}
       </SearchContainer>
       {userData ? <User userData={userData} /> : null}
+      <ContentContainer>
+        <FavTracks topTracksData={topTracksData} />
+        <FavTracks />
+        <FavTracks />
+      </ContentContainer>
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
     </>
   );
