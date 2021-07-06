@@ -28,7 +28,7 @@ export default function FavTracks({ topTracksData }) {
       <TopTrackTitle>Top Tracks of All Time</TopTrackTitle>
       <TopTracks>
         {topTracksData.map((track) => (
-          <Track track={track} />
+          <Track key={track.trackName} track={track} />
         ))}
       </TopTracks>
     </TopTrackContainer>

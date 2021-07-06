@@ -139,13 +139,13 @@ export default function Dashboard({ code }) {
         setTopTracksData([
           ...topTracks.map((track) => {
             let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
-              if (cv <= acc) {
-                cv = acc;
+              if (cv.height <= acc.height) {
+                acc = cv;
               }
               return acc;
-            }, 0);
+            });
             return {
-              albumUrl: smallestAlbumArt,
+              albumUrl: smallestAlbumArt.url,
               albumName: track.album.name,
               artist: track.artists[0].name,
               trackName: track.name,
@@ -185,11 +185,11 @@ export default function Dashboard({ code }) {
         ) : null}
       </SearchContainer>
       {userData ? <User userData={userData} /> : null}
-      <ContentContainer>
-        <FavTracks topTracksData={topTracksData} />
-        <FavTracks />
-        <FavTracks />
-      </ContentContainer>
+      {topTracksData ? (
+        <ContentContainer>
+          <FavTracks topTracksData={topTracksData} />
+        </ContentContainer>
+      ) : null}
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
     </>
   );
