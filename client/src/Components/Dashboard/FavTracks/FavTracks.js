@@ -5,6 +5,7 @@ import Track from "../../Msc/Track";
 const TopTrackContainer = styled.div`
   height: fit-content;
   width: 30%;
+  min-width: 250px;
   border: purple 1px solid;
 `;
 
@@ -12,7 +13,7 @@ const TopTrackTitle = styled.h1`
   color: #eab971;
   font-size: 1.2rem;
   margin-bottom: 7.5px;
-  text-align: center;
+  /* text-align: center; */
 `;
 
 const TopTracks = styled.div`
