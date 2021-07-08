@@ -69,6 +69,7 @@ export default function Dashboard({ code }) {
   const accessToken = useAuth(code);
 
   function chooseTrack(track) {
+    console.log(track);
     setPlayingTrack(track);
     setSearch("");
   }
@@ -196,7 +197,7 @@ export default function Dashboard({ code }) {
       {userData ? <User userData={userData} /> : null}
       {topTracksData ? (
         <ContentContainer>
-          <FavTracks topTracksData={topTracksData} />
+          <FavTracks topTracksData={topTracksData} chooseTrack={chooseTrack} />
         </ContentContainer>
       ) : null}
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />

@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { TiMediaPlay } from "react-icons/ti";
 
 const TrackContainer = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
-  margin: 1px 0;
+  margin: 3px 0;
 `;
 
 const TrackAlbumArtContainer = styled.div`
@@ -24,7 +25,7 @@ const TrackAlbumArt = styled.img`
 const TrackNameContainer = styled.div`
   height: 100%;
   width: fit-content;
-  flex: 60%;
+  flex: 55%;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -43,16 +44,16 @@ const TrackArtist = styled.h2`
 `;
 
 const TrackTime = styled.div`
-  flex: 10%;
+  flex: 12.5%;
   font-size: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-export default function Track({ track }) {
+export default function Track({ track, chooseTrack }) {
   return (
-    <TrackContainer>
+    <TrackContainer onClick={() => chooseTrack(track)}>
       <TrackAlbumArtContainer>
         <TrackAlbumArt src={track.albumUrl} alt={track.albumName} />
       </TrackAlbumArtContainer>
@@ -60,7 +61,10 @@ export default function Track({ track }) {
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
-      <TrackTime>{track.duration}</TrackTime>
+      <TrackTime>
+        <TiMediaPlay />
+        {track.duration}
+      </TrackTime>
     </TrackContainer>
   );
 }

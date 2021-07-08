@@ -22,13 +22,17 @@ const TopTracks = styled.div`
   padding: 3px;
 `;
 
-export default function FavTracks({ topTracksData }) {
+export default function FavTracks({ topTracksData, chooseTrack }) {
   return (
     <TopTrackContainer>
       <TopTrackTitle>Top Tracks of All Time</TopTrackTitle>
       <TopTracks>
         {topTracksData.map((track) => (
-          <Track key={track.trackName} track={track} />
+          <Track
+            key={track.trackName}
+            track={track}
+            chooseTrack={chooseTrack}
+          />
         ))}
       </TopTracks>
     </TopTrackContainer>
