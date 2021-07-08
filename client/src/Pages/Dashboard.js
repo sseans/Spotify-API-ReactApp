@@ -47,7 +47,6 @@ const SearchResultsContainer = styled.div`
 const ContentContainer = styled.div`
   width: 100%;
   height: fit-content;
-  border: red 1px solid;
   display: flex;
   padding: 0px 15px;
   justify-content: space-between;
@@ -135,27 +134,37 @@ export default function Dashboard({ code }) {
     spotifyApi.getMyTopTracks({ time_range: "long_term", limit: 10 }).then(
       (data) => {
         let topTracks = data.body.items;
-        console.log(topTracks);
+        // Set Top Track State mapping through each track in the json response
         setTopTracksData([
           ...topTracks.map((track) => {
+            // Finds the smallest album art to be used as a thumbnail
             let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
               if (cv.height <= acc.height) {
                 acc = cv;
               }
               return acc;
             });
+            // Turns TrackDuration in Millisecs to minute:second form
+            let trackDuration = (track.duration_ms / 1000 / 60)
+              .toString()
+              .split(".");
+            trackDuration[1] = Math.round(
+              parseFloat("0." + trackDuration[1]) * 60
+            ).toString();
+            // Return an object for each track with useful data
             return {
               albumUrl: smallestAlbumArt.url,
               albumName: track.album.name,
               artist: track.artists[0].name,
               trackName: track.name,
               uri: track.uri,
+              duration: trackDuration.join(":"),
             };
           }),
         ]);
       },
       (err) => {
-        console.log("Error : .getMe() : ", err);
+        console.log("Error in FillTopTracks() : ", err);
       }
     );
   }

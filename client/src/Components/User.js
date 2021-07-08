@@ -9,7 +9,7 @@ const UserContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: fixed;
-  top: 11%;
+  top: 60px;
 `;
 
 const UserIcon = styled.div`
@@ -24,7 +24,7 @@ const UserIconImage = styled.img`
 `;
 
 const Name = styled.h1`
-  color: #eab971;
+  color: #dce7e5;
   font-size: 1.2rem;
 `;
 
