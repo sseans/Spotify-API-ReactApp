@@ -7,6 +7,24 @@ const TrackContainer = styled.div`
   height: 40px;
   display: flex;
   margin: 3px 0;
+  position: relative;
+  cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    transition: all 200ms ease-in;
+  }
+  &:hover {
+    &::after {
+      background-color: #eea477;
+      opacity: 0.3;
+    }
+  }
 `;
 
 const TrackAlbumArtContainer = styled.div`
@@ -15,6 +33,8 @@ const TrackAlbumArtContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 1;
 `;
 
 const TrackAlbumArt = styled.img`

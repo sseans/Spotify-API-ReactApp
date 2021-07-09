@@ -11,6 +11,7 @@ import FavTracks from "../Components/Dashboard/FavTracks/FavTracks";
 
 const SearchContainer = styled.div`
   position: fixed;
+  z-index: 99;
   top: 12.5px;
   width: 95%;
   display: flex;
