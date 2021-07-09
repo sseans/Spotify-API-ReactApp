@@ -87,13 +87,14 @@ export default function Dashboard({ code }) {
     fillTopTrackData();
   }, [accessToken]);
 
+  // Search useffect => when something is typed in the search input
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!accessToken) return;
-
     let cancel = false;
     spotifyApi.searchTracks(search).then((res) => {
       if (cancel) return;
+      // Set search results usestate
       setSearchResults(
         res.body.tracks.items.map((track) => {
           const smallestAlbumImage = track.album.images.reduce(
@@ -103,7 +104,7 @@ export default function Dashboard({ code }) {
             },
             track.album.images[0]
           );
-
+          // Return an object for each track with useful data
           return {
             artist: track.artists[0].name,
             title: track.name,
@@ -116,9 +117,11 @@ export default function Dashboard({ code }) {
     return () => (cancel = true);
   }, [search, accessToken]);
 
+  // Get User Data for currently logged in user
   function fillUserData() {
     spotifyApi.getMe().then(
       (data) => {
+        // Set User Data usestate
         setUserData({
           displayName: data.body.display_name,
           userName: data.body.id,
@@ -132,6 +135,7 @@ export default function Dashboard({ code }) {
     );
   }
 
+  // Favourite Tracks => Long Term
   function fillTopTrackData() {
     spotifyApi.getMyTopTracks({ time_range: "long_term", limit: 10 }).then(
       (data) => {

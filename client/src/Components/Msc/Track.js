@@ -14,15 +14,17 @@ const TrackContainer = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 0%;
     height: 100%;
     border-radius: 15px;
-    transition: all 200ms ease-in;
+    background-color: #eea477;
+    opacity: 0;
+    transition: all 200ms ease;
   }
   &:hover {
     &::after {
-      background-color: #eea477;
       opacity: 0.3;
+      width: 100%;
     }
   }
 `;
