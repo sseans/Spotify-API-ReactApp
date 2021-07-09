@@ -16,6 +16,7 @@ const TrackAlbumArtContainer = styled.div`
 
 const TrackAlbumArt = styled.img`
   width: auto;
+  border-radius: 15px;
 `;
 
 const TrackInfo = styled.div`

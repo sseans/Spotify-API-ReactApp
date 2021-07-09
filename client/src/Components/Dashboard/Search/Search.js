@@ -1,55 +1,75 @@
 import React from "react";
 import styled from "styled-components";
-
-const Wrapper = styled.div`
-  width: 100%;
-`;
-
-const FormWrapper = styled.form`
-  width: 100%;
-`;
-
-const SearchBox = styled.input`
-  height: 30px;
-  width: 100%;
-  border-radius: 15px;
-  background-color: #fff;
-  border: none;
-  font-size: 1rem;
-  padding: 0 12.5px;
-  &::placeholder {
-    font-size: 1rem;
-  }
-  &:focus {
-    outline: none;
-  }
-`;
+import SearchResult from "./SearchResult";
+import SearchBar from "./SearchBar.js";
 
 const SearchContainer = styled.div`
-  width: 100%;
-  /* padding: 0 15px; */
-  display: flex;
-  justify-content: center;
+  position: relative;
+  width: 40%;
+  margin: 0 15px;
 `;
 
-export default function Search({ search, setSearch, pickFirstTrack }) {
+const SearchResultRoundedCornerDiv = styled.div`
+  position: absolute;
+  z-index: 98;
+  top: 11px;
+  margin: 2px 0;
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+`;
+
+const SearchResultsContainer = styled.div`
+  padding: 15px 5px 0px 5px;
+  height: calc(100vh - 120px);
+  max-height: 600px;
+  overflow: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--very-dark-green);
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--very-dark-green);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--gold-crayola);
+    border: 3px solid var(--very-dark-green);
+    border-radius: 10px;
+  }
+`;
+
+export default function Search({
+  search,
+  setSearch,
+  pickFirstTrack,
+  searchResults,
+  chooseTrack,
+}) {
   return (
-    <Wrapper>
-      <FormWrapper
-        onSubmit={(e) => {
-          e.preventDefault();
-          pickFirstTrack();
-        }}
-      >
-        <SearchContainer>
-          <SearchBox
-            type="text"
-            placeholder="Search Songs"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </SearchContainer>
-      </FormWrapper>
-    </Wrapper>
+    <SearchContainer>
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        pickFirstTrack={pickFirstTrack}
+      />
+      {search ? (
+        <SearchResultRoundedCornerDiv>
+          <SearchResultsContainer>
+            {searchResults.map((track) => {
+              return (
+                <SearchResult
+                  chooseTrack={chooseTrack}
+                  key={track.uri}
+                  track={track}
+                />
+              );
+            })}
+          </SearchResultsContainer>
+        </SearchResultRoundedCornerDiv>
+      ) : null}
+    </SearchContainer>
   );
 }

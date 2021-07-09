@@ -3,46 +3,20 @@ import useAuth from "../Hooks/useAuth.js";
 import SpotifyWebApi from "spotify-web-api-node";
 import ClipLoader from "react-spinners/ClipLoader";
 import Search from "../Components/Dashboard/Search/Search";
-import SearchResult from "../Components/Dashboard/Search/SearchResult.js";
 import styled from "styled-components";
 import Player from "../Components/Dashboard/Player/Player.js";
 import User from "../Components/User";
 import FavTracks from "../Components/Dashboard/FavTracks/FavTracks";
 
-const SearchContainer = styled.div`
+const Navbar = styled.div`
+  width: 100%;
+  height: 70px;
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 99;
-  top: 12.5px;
-  width: 95%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  background-color: var(--very-dark-green);
-  border-radius: 15px;
-  margin: 0 15px;
-`;
-
-const SearchResultsContainer = styled.div`
-  position: relative;
-  margin: 2px 0;
-  height: calc(100% - 120px);
-  max-height: 600px;
-  overflow-y: scroll;
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--very-dark-green);
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--gold-crayola);
-    border: 3px solid var(--very-dark-green);
-    border-radius: 10px;
-  }
 `;
 
 const ContentContainer = styled.div`
@@ -57,8 +31,6 @@ const spotifyApi = new SpotifyWebApi({
   clientId: "790b0e732d4f4ac397b1207b4a54b1da",
 });
 
-// const tracks = [];
-
 export default function Dashboard({ code }) {
   let [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -69,16 +41,19 @@ export default function Dashboard({ code }) {
 
   const accessToken = useAuth(code);
 
+  // Play (track) => requires track.uri
   function chooseTrack(track) {
     console.log(track);
     setPlayingTrack(track);
     setSearch("");
   }
 
+  // Play first searchResult by pressing enter => passed down into <search /> component
   function pickFirstTrack() {
     chooseTrack(searchResults[0]);
   }
 
+  // Main page content trigger => if accessToken is added/changed fill page content
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -91,12 +66,14 @@ export default function Dashboard({ code }) {
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!accessToken) return;
+    // let cancel makes sure the search isnt searched for every single character typed
     let cancel = false;
     spotifyApi.searchTracks(search).then((res) => {
       if (cancel) return;
       // Set search results usestate
       setSearchResults(
         res.body.tracks.items.map((track) => {
+          // Find smallest album art
           const smallestAlbumImage = track.album.images.reduce(
             (smallest, image) => {
               if (image.height < smallest.height) return image;
@@ -150,7 +127,7 @@ export default function Dashboard({ code }) {
               }
               return acc;
             });
-            // Turns TrackDuration in Millisecs to minute:second form
+            // Converts TrackDuration in Millisecs to minute:second form
             let trackDuration = (track.duration_ms / 1000 / 60)
               .toString()
               .split(".");
@@ -179,27 +156,16 @@ export default function Dashboard({ code }) {
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
     <>
-      <SearchContainer>
+      <Navbar>
+        {userData ? <User userData={userData} /> : null}
         <Search
           search={search}
           setSearch={setSearch}
           pickFirstTrack={pickFirstTrack}
+          searchResults={searchResults}
+          chooseTrack={chooseTrack}
         />
-        {search ? (
-          <SearchResultsContainer>
-            {searchResults.map((track) => {
-              return (
-                <SearchResult
-                  chooseTrack={chooseTrack}
-                  key={track.uri}
-                  track={track}
-                />
-              );
-            })}
-          </SearchResultsContainer>
-        ) : null}
-      </SearchContainer>
-      {userData ? <User userData={userData} /> : null}
+      </Navbar>
       {topTracksData ? (
         <ContentContainer>
           <FavTracks topTracksData={topTracksData} chooseTrack={chooseTrack} />

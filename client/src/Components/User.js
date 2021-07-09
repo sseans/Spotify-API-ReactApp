@@ -3,18 +3,18 @@ import styled from "styled-components";
 
 const UserContainer = styled.div`
   height: fit-content;
-  width: 80%;
+  width: fit-content;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  position: fixed;
-  top: 60px;
+  /* position: fixed; */
+  /* top: 60px; */
 `;
 
 const UserIcon = styled.div`
-  height: 70px;
-  width: 70px;
+  height: 30px;
+  width: 30px;
   overflow: hidden;
   border-radius: 50%;
   margin-bottom: 5px;
@@ -23,13 +23,13 @@ const UserIconImage = styled.img`
   height: 100%;
 `;
 
-const Name = styled.h1`
-  color: #dce7e5;
-  font-size: 1.2rem;
-`;
+// const Name = styled.h1`
+//   color: #dce7e5;
+//   font-size: 1.2rem;
+// `;
 
 const UserName = styled.h3`
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-style: italic;
 `;
 
@@ -44,7 +44,7 @@ export default function User({ userData }) {
       <UserIcon>
         <UserIconImage src={userData.imageUrl} alt={userData.displayName} />
       </UserIcon>
-      <Name>{userData.displayName}</Name>
+      {/* <Name>{userData.displayName}</Name> */}
       <UserName>{`@${userData.userName}`}</UserName>
       {/* <Followers>{`${userData.followers} Followers`}</Followers> */}
     </UserContainer>
