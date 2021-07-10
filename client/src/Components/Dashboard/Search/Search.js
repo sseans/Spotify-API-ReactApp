@@ -20,7 +20,7 @@ const SearchResultRoundedCornerDiv = styled.div`
 `;
 
 const SearchResultsContainer = styled.div`
-  padding: 15px 5px 0px 5px;
+  padding: 25px 5px 0px 5px;
   height: calc(100vh - 120px);
   max-height: 600px;
   overflow: auto;
@@ -41,6 +41,35 @@ const SearchResultsContainer = styled.div`
   }
 `;
 
+const SearchBackdrop = styled.div`
+  position: absolute;
+  z-index: 97;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+
+  background-color: transparent;
+  opacity: 1;
+  transition: all 200ms ease-in-out;
+  /* Lets see if this blur works */
+  -webkit-backdrop-filter: url("#blur");
+  backdrop-filter: url("#blur");
+  -webkit-filter: blur(2px);
+  filter: blur(2px);
+  backdrop-filter: blur(2px);
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+  }
+`;
+
 export default function Search({
   search,
   setSearch,
@@ -49,27 +78,30 @@ export default function Search({
   chooseTrack,
 }) {
   return (
-    <SearchContainer>
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-        pickFirstTrack={pickFirstTrack}
-      />
-      {search ? (
-        <SearchResultRoundedCornerDiv>
-          <SearchResultsContainer>
-            {searchResults.map((track) => {
-              return (
-                <SearchResult
-                  chooseTrack={chooseTrack}
-                  key={track.uri}
-                  track={track}
-                />
-              );
-            })}
-          </SearchResultsContainer>
-        </SearchResultRoundedCornerDiv>
-      ) : null}
-    </SearchContainer>
+    <>
+      {search !== "" ? <SearchBackdrop onClick={() => setSearch("")} /> : null}
+      <SearchContainer>
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          pickFirstTrack={pickFirstTrack}
+        />
+        {search ? (
+          <SearchResultRoundedCornerDiv>
+            <SearchResultsContainer>
+              {searchResults.map((track) => {
+                return (
+                  <SearchResult
+                    chooseTrack={chooseTrack}
+                    key={track.uri}
+                    track={track}
+                  />
+                );
+              })}
+            </SearchResultsContainer>
+          </SearchResultRoundedCornerDiv>
+        ) : null}
+      </SearchContainer>
+    </>
   );
 }

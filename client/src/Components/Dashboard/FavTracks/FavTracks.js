@@ -11,7 +11,7 @@ const TopTrackTitle = styled.h1`
   color: #dce7e5;
   font-size: 1.2rem;
   margin-bottom: 7.5px;
-  /* text-align: center; */
+  text-align: center;
 `;
 
 const TopTracks = styled.div`

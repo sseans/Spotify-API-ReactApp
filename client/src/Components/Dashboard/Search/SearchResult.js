@@ -5,17 +5,40 @@ const SearchResultContainer = styled.div`
   display: flex;
   width: 100%;
   padding: 2.5px 0px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
   cursor: pointer;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 0%;
+    height: 100%;
+    border-radius: 15px;
+    background-color: #eea477;
+    opacity: 0;
+    transition: all 200ms ease;
+  }
+  &:hover {
+    &::after {
+      opacity: 0.3;
+      width: 100%;
+    }
+  }
 `;
 
 const TrackAlbumArtContainer = styled.div`
   width: fit-content;
+  height: 64px;
   margin-right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TrackAlbumArt = styled.img`
-  width: auto;
+  height: 100%;
   border-radius: 15px;
 `;
 
