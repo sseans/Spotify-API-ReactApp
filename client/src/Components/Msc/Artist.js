@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { AiFillStar } from "react-icons/ai";
 
 const ArtistContainer = styled.div`
   width: 100%;
@@ -58,7 +59,7 @@ const ArtistName = styled.h1`
   color: #dce7e5;
 `;
 
-const ArtistFollowers = styled.h2`
+const ArtistGenres = styled.h2`
   font-size: 0.6rem;
   opacity: 0.7;
   color: #93b7be;
@@ -70,6 +71,9 @@ const ArtistPopularity = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  svg {
+    padding-left: 1px;
+  }
 `;
 
 export default function Artist({ artist }) {
@@ -80,11 +84,18 @@ export default function Artist({ artist }) {
       </ArtistImageContainer>
       <ArtistNameContainer>
         <ArtistName>{artist.artist}</ArtistName>
-        <ArtistFollowers>
-          {artist.genres.map((genre) => `${genre} and `)}
-        </ArtistFollowers>
+        <ArtistGenres>
+          {artist.genres.map((genre, index) =>
+            index === 1
+              ? genre
+              : `${genre} ${artist.genres.length > 1 ? "and" : ""} `
+          )}
+        </ArtistGenres>
       </ArtistNameContainer>
-      <ArtistPopularity>{artist.popularity + " - Pop"}</ArtistPopularity>
+      <ArtistPopularity>
+        {artist.popularity}
+        <AiFillStar />
+      </ArtistPopularity>
     </ArtistContainer>
   );
 }
