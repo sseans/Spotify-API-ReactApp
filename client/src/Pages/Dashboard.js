@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Player from "../Components/Dashboard/Player/Player.js";
 import User from "../Components/User";
 import FavTracks from "../Components/Dashboard/FavTracks/FavTracks";
+import FavArtists from "../Components/Dashboard/FavArtists/FavArtists.js";
 
 const Navbar = styled.div`
   width: 100%;
@@ -38,6 +39,7 @@ export default function Dashboard({ code }) {
   const [playingTrack, setPlayingTrack] = useState();
   const [userData, setUserData] = useState();
   const [topTracksData, setTopTracksData] = useState();
+  const [topArtistsData, setTopArtistsData] = useState();
 
   const accessToken = useAuth(code);
 
@@ -60,6 +62,7 @@ export default function Dashboard({ code }) {
     setLoading(false);
     fillUserData();
     fillTopTrackData();
+    test();
   }, [accessToken]);
 
   // Search useffect => when something is typed in the search input
@@ -152,6 +155,45 @@ export default function Dashboard({ code }) {
     );
   }
 
+  // Favourite Artists => Long Term
+  function test() {
+    spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 10 }).then(
+      (data) => {
+        let topArtists = data.body.items;
+        console.log(topArtists);
+        // Set Top Artist State mapping through each artist in the json response
+        setTopArtistsData([
+          ...topArtists.map((artist) => {
+            // Finds the smallest artist picture to be used as a thumbnail
+            let smallestArtistPicture = artist.images.reduce((acc, cv) => {
+              if (cv.height <= acc.height) {
+                acc = cv;
+              }
+              return acc;
+            });
+            // Return two Genres
+            let genres = artist.genres.slice(0, 2);
+            console.log(genres);
+
+            // Return an object for each artist with useful data
+            return {
+              pictureUrl: smallestArtistPicture.url,
+              followers: artist.followers.total,
+              artist: artist.name,
+              uri: artist.uri,
+              popularity: artist.popularity,
+              genres: genres,
+              id: artist.id,
+            };
+          }),
+        ]);
+      },
+      (err) => {
+        console.log("Error : .getMe() : ", err);
+      }
+    );
+  }
+
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
@@ -166,9 +208,10 @@ export default function Dashboard({ code }) {
           chooseTrack={chooseTrack}
         />
       </Navbar>
-      {topTracksData ? (
+      {topTracksData && topArtistsData ? (
         <ContentContainer>
           <FavTracks topTracksData={topTracksData} chooseTrack={chooseTrack} />
+          <FavArtists topArtistsData={topArtistsData} />
         </ContentContainer>
       ) : null}
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
