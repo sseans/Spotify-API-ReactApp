@@ -52,6 +52,10 @@ const TopTrackSwitcher = styled.div`
   align-items: center;
   font-size: 0.7rem;
   font-weight: bold;
+  &:hover {
+    border: #eec78c 1px solid;
+    cursor: pointer;
+  }
 `;
 
 export default function FavTracks({ topTracksData, chooseTrack }) {
