@@ -29,16 +29,44 @@ const TopTracks = styled.div`
   background-color: #293d3d;
   border-radius: 15px;
   padding: 3px;
+  position: relative;
+`;
+
+const TopTrackSwitcherContainer = styled.div`
+  width: 100%;
+  height: 25px;
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+`;
+
+const TopTrackSwitcher = styled.div`
+  /* position: absolute; */
+  border-radius: 15px;
+  z-index: 1;
+  height: 25px;
+  width: 100px;
+  background-color: #354f4f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: bold;
 `;
 
 export default function FavTracks({ topTracksData, chooseTrack }) {
   return (
     <TopTrackContainer>
       <TopTrackTitle>
-        Top Tracks of All Time
+        Top Tracks
         <BsArrowsAngleExpand />
       </TopTrackTitle>
       <TopTracks>
+        <TopTrackSwitcherContainer>
+          <TopTrackSwitcher>Long Term</TopTrackSwitcher>
+          <TopTrackSwitcher>Medium Term</TopTrackSwitcher>
+          <TopTrackSwitcher>Short Term</TopTrackSwitcher>
+        </TopTrackSwitcherContainer>
         {topTracksData.map((track) => (
           <Track
             key={track.trackName}
