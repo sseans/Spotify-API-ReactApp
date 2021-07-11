@@ -28,6 +28,13 @@ const ContentContainer = styled.div`
   justify-content: space-between;
 `;
 
+const HeaderSVG = styled.svg`
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  width: 100%;
+`;
+
 const spotifyApi = new SpotifyWebApi({
   clientId: "790b0e732d4f4ac397b1207b4a54b1da",
 });
@@ -173,8 +180,6 @@ export default function Dashboard({ code }) {
             });
             // Return two Genres
             let genres = artist.genres.slice(0, 2);
-            console.log(genres);
-
             // Return an object for each artist with useful data
             return {
               pictureUrl: smallestArtistPicture.url,
@@ -198,6 +203,12 @@ export default function Dashboard({ code }) {
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
     <>
+      <HeaderSVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path
+          fill="#EEC78C"
+          d="M0,256L40,224C80,192,160,128,240,133.3C320,139,400,213,480,218.7C560,224,640,160,720,122.7C800,85,880,75,960,69.3C1040,64,1120,64,1200,74.7C1280,85,1360,107,1400,117.3L1440,128L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
+        ></path>
+      </HeaderSVG>
       <Navbar>
         {userData ? <User userData={userData} /> : null}
         <Search

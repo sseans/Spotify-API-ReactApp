@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 
 const UserContainer = styled.div`
@@ -17,7 +17,8 @@ const UserIcon = styled.div`
   width: 30px;
   overflow: hidden;
   border-radius: 50%;
-  margin-bottom: 5px;
+  margin: 0 0 0 20px;
+  cursor: pointer;
 `;
 const UserIconImage = styled.img`
   height: 100%;
@@ -28,10 +29,10 @@ const UserIconImage = styled.img`
 //   font-size: 1.2rem;
 // `;
 
-const UserName = styled.h3`
-  font-size: 0.65rem;
-  font-style: italic;
-`;
+// const UserName = styled.h3`
+//   font-size: 0.65rem;
+//   font-style: italic;
+// `;
 
 // const Followers = styled.p`
 //   font-size: 1rem;
@@ -45,7 +46,7 @@ export default function User({ userData }) {
         <UserIconImage src={userData.imageUrl} alt={userData.displayName} />
       </UserIcon>
       {/* <Name>{userData.displayName}</Name> */}
-      <UserName>{`@${userData.userName}`}</UserName>
+      {/* <UserName>{`@${userData.userName}`}</UserName> */}
       {/* <Followers>{`${userData.followers} Followers`}</Followers> */}
     </UserContainer>
   );

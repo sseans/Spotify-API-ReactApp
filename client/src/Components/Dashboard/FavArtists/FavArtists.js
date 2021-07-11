@@ -8,7 +8,7 @@ const TopArtistContainer = styled.div`
 `;
 
 const TopArtistTitle = styled.h1`
-  color: #dce7e5;
+  color: white;
   font-size: 1.2rem;
   margin-bottom: 7.5px;
   text-align: center;
