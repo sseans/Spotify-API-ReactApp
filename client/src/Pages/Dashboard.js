@@ -7,7 +7,10 @@ import styled from "styled-components";
 import Player from "../Components/Dashboard/Player/Player.js";
 import User from "../Components/User";
 import FavTracks from "../Components/Dashboard/FavTracks/FavTracks";
-import FavArtists from "../Components/Dashboard/FavArtists/FavArtists.js";
+// import FavArtists from "../Components/Dashboard/FavArtists/FavArtists.js";
+import ElementContainer from "../Components/Msc/ElementContainer.js";
+import Track from "../Components/Msc/Track";
+import Artist from "../Components/Msc/Artist.js";
 
 const Navbar = styled.div`
   width: 100%;
@@ -221,8 +224,22 @@ export default function Dashboard({ code }) {
       </Navbar>
       {topTracksData && topArtistsData ? (
         <ContentContainer>
-          <FavTracks topTracksData={topTracksData} chooseTrack={chooseTrack} />
-          <FavArtists topArtistsData={topArtistsData} />
+          {/* <FavTracks topTracksData={topTracksData} chooseTrack={chooseTrack} /> */}
+          <ElementContainer type={"tracks"}>
+            {topTracksData.map((track) => (
+              <Track
+                key={track.trackName}
+                track={track}
+                chooseTrack={chooseTrack}
+              />
+            ))}
+          </ElementContainer>
+          <ElementContainer type={"artists"}>
+            {topArtistsData.map((artist) => (
+              <Artist key={artist.artist} artist={artist} />
+            ))}
+          </ElementContainer>
+          {/* <FavArtists topArtistsData={topArtistsData} /> */}
         </ContentContainer>
       ) : null}
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
