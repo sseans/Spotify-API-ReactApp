@@ -9,6 +9,7 @@ import User from "../Components/User";
 import ElementContainer from "../Components/Msc/ElementContainer.js";
 import Track from "../Components/Msc/Track";
 import Artist from "../Components/Msc/Artist.js";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Navbar = styled.div`
   width: 100%;
@@ -53,7 +54,6 @@ export default function Dashboard({ code }) {
 
   // Play (track) => requires track.uri
   function chooseTrack(track) {
-    console.log(track);
     setPlayingTrack(track);
     setSearch("");
   }
@@ -70,7 +70,7 @@ export default function Dashboard({ code }) {
     setLoading(false);
     fillUserData();
     fillTopTrackData();
-    test();
+    fillTopArtistData();
   }, [accessToken]);
 
   // Search useffect => when something is typed in the search input
@@ -164,11 +164,11 @@ export default function Dashboard({ code }) {
   }
 
   // Favourite Artists => Long Term
-  function test() {
+  function fillTopArtistData() {
+    // console.log(location.pathname);
     spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 10 }).then(
       (data) => {
         let topArtists = data.body.items;
-        console.log(topArtists);
         // Set Top Artist State mapping through each artist in the json response
         setTopArtistsData([
           ...topArtists.map((artist) => {
@@ -204,41 +204,82 @@ export default function Dashboard({ code }) {
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
     <>
-      <HeaderSVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path
-          fill="#EEC78C"
-          d="M0,256L40,224C80,192,160,128,240,133.3C320,139,400,213,480,218.7C560,224,640,160,720,122.7C800,85,880,75,960,69.3C1040,64,1120,64,1200,74.7C1280,85,1360,107,1400,117.3L1440,128L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
-        ></path>
-      </HeaderSVG>
-      <Navbar>
-        {userData ? <User userData={userData} /> : null}
-        <Search
-          search={search}
-          setSearch={setSearch}
-          pickFirstTrack={pickFirstTrack}
-          searchResults={searchResults}
-          chooseTrack={chooseTrack}
-        />
-      </Navbar>
-      {topTracksData && topArtistsData ? (
-        <ContentContainer>
-          <ElementContainer type={"tracks"}>
-            {topTracksData.map((track) => (
-              <Track
-                key={track.trackName}
-                track={track}
-                chooseTrack={chooseTrack}
-              />
-            ))}
-          </ElementContainer>
-          <ElementContainer type={"artists"}>
-            {topArtistsData.map((artist) => (
-              <Artist key={artist.artist} artist={artist} />
-            ))}
-          </ElementContainer>
-        </ContentContainer>
-      ) : null}
-      <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+      <Router>
+        {/* SVG WAVE */}
+        <HeaderSVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path
+            fill="#EEC78C"
+            d="M0,256L40,224C80,192,160,128,240,133.3C320,139,400,213,480,218.7C560,224,640,160,720,122.7C800,85,880,75,960,69.3C1040,64,1120,64,1200,74.7C1280,85,1360,107,1400,117.3L1440,128L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
+          ></path>
+        </HeaderSVG>
+        {/* Navbar Component => User + Searchbar */}
+        <Navbar>
+          {userData ? (
+            <Link to="/">
+              <User userData={userData} />
+            </Link>
+          ) : null}
+          <Search
+            search={search}
+            setSearch={setSearch}
+            pickFirstTrack={pickFirstTrack}
+            searchResults={searchResults}
+            chooseTrack={chooseTrack}
+          />
+        </Navbar>
+        {/* Main Content => REACT ROUTER SWITCH */}
+        <Switch>
+          {/* Fav Tracks - Route */}
+          <Route path="/tracks">
+            {topTracksData && topArtistsData ? (
+              <ElementContainer
+                type={"tracks"}
+                Link={Link}
+                triggerFillFunction={fillTopTrackData}
+              >
+                {topTracksData.map((track) => (
+                  <Track
+                    key={track.trackName}
+                    track={track}
+                    chooseTrack={chooseTrack}
+                  />
+                ))}
+              </ElementContainer>
+            ) : null}
+          </Route>
+          {/* Homepage Main - Route */}
+          <Route path="/">
+            {topTracksData && topArtistsData ? (
+              <ContentContainer>
+                <ElementContainer
+                  type={"tracks"}
+                  Link={Link}
+                  triggerFillFunction={fillTopTrackData}
+                >
+                  {topTracksData.map((track) => (
+                    <Track
+                      key={track.trackName}
+                      track={track}
+                      chooseTrack={chooseTrack}
+                    />
+                  ))}
+                </ElementContainer>
+                <ElementContainer
+                  type={"artists"}
+                  Link={Link}
+                  triggerFillFunction={fillTopArtistData}
+                >
+                  {topArtistsData.map((artist) => (
+                    <Artist key={artist.artist} artist={artist} />
+                  ))}
+                </ElementContainer>
+              </ContentContainer>
+            ) : null}
+          </Route>
+        </Switch>
+        {/* Spotify Web Player */}
+        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+      </Router>
     </>
   );
 }

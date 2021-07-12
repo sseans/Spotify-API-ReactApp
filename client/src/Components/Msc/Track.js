@@ -31,6 +31,8 @@ const TrackContainer = styled.div`
 
 const TrackAlbumArtContainer = styled.div`
   flex: 15%;
+  max-width: 90px;
+  min-width: 50px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -47,7 +49,7 @@ const TrackAlbumArt = styled.img`
 const TrackNameContainer = styled.div`
   height: 100%;
   width: fit-content;
-  flex: 55%;
+  flex: 100%;
   display: flex;
   flex-direction: column;
   text-align: left;

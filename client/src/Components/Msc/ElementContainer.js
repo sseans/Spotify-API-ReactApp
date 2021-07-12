@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { BsArrowsAngleExpand } from "react-icons/bs";
 
@@ -19,6 +20,11 @@ const TopTrackTitle = styled.h1`
     margin-left: 10px;
     cursor: pointer;
     font-size: 0.9rem;
+    text-decoration: none;
+    color: white;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 `;
 
@@ -58,11 +64,22 @@ const TopTrackSwitcher = styled.div`
 `;
 
 export default function ElementContainer(props) {
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log(props);
+    props.triggerFillFunction();
+  }, [location]);
+
+  console.log(location);
+
   return (
     <TopTrackContainer>
       <TopTrackTitle>
         {props.type === "artists" ? "Top Artists" : "Top Tracks"}
-        <BsArrowsAngleExpand />
+        <props.Link to={props.type === "artists" ? "/artists" : "/tracks"}>
+          <BsArrowsAngleExpand />
+        </props.Link>
       </TopTrackTitle>
       <TopTracks>
         <TopTrackSwitcherContainer>
