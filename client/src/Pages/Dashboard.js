@@ -6,8 +6,6 @@ import Search from "../Components/Dashboard/Search/Search";
 import styled from "styled-components";
 import Player from "../Components/Dashboard/Player/Player.js";
 import User from "../Components/User";
-import FavTracks from "../Components/Dashboard/FavTracks/FavTracks";
-// import FavArtists from "../Components/Dashboard/FavArtists/FavArtists.js";
 import ElementContainer from "../Components/Msc/ElementContainer.js";
 import Track from "../Components/Msc/Track";
 import Artist from "../Components/Msc/Artist.js";
@@ -224,7 +222,6 @@ export default function Dashboard({ code }) {
       </Navbar>
       {topTracksData && topArtistsData ? (
         <ContentContainer>
-          {/* <FavTracks topTracksData={topTracksData} chooseTrack={chooseTrack} /> */}
           <ElementContainer type={"tracks"}>
             {topTracksData.map((track) => (
               <Track
@@ -239,7 +236,6 @@ export default function Dashboard({ code }) {
               <Artist key={artist.artist} artist={artist} />
             ))}
           </ElementContainer>
-          {/* <FavArtists topArtistsData={topArtistsData} /> */}
         </ContentContainer>
       ) : null}
       <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
