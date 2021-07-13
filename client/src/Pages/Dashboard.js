@@ -124,80 +124,88 @@ export default function Dashboard({ code }) {
   }
 
   // Favourite Tracks => Long Term
-  function fillTopTrackData() {
-    spotifyApi.getMyTopTracks({ time_range: "long_term", limit: 10 }).then(
-      (data) => {
-        let topTracks = data.body.items;
-        // Set Top Track State mapping through each track in the json response
-        setTopTracksData([
-          ...topTracks.map((track) => {
-            // Finds the smallest album art to be used as a thumbnail
-            let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
-              if (cv.height <= acc.height) {
-                acc = cv;
+  function fillTopTrackData(termState = "long_term", trackAmount = "10") {
+    spotifyApi
+      .getMyTopTracks({ time_range: termState, limit: trackAmount })
+      .then(
+        (data) => {
+          let topTracks = data.body.items;
+          // Set Top Track State mapping through each track in the json response
+          setTopTracksData([
+            ...topTracks.map((track) => {
+              // Finds the smallest album art to be used as a thumbnail
+              let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
+                if (cv.height <= acc.height) {
+                  acc = cv;
+                }
+                return acc;
+              });
+              // Converts TrackDuration in Millisecs to minute:second form
+              let trackDuration = (track.duration_ms / 1000 / 60)
+                .toString()
+                .split(".");
+              trackDuration[1] = Math.round(
+                parseFloat("0." + trackDuration[1]) * 60
+              ).toString();
+              // This adds a '0' to the front of the seconds if it returns a single digit
+              if (trackDuration[1] < 10) {
+                trackDuration[1] = "0" + trackDuration[1];
               }
-              return acc;
-            });
-            // Converts TrackDuration in Millisecs to minute:second form
-            let trackDuration = (track.duration_ms / 1000 / 60)
-              .toString()
-              .split(".");
-            trackDuration[1] = Math.round(
-              parseFloat("0." + trackDuration[1]) * 60
-            ).toString();
-            // Return an object for each track with useful data
-            return {
-              albumUrl: smallestAlbumArt.url,
-              albumName: track.album.name,
-              artist: track.artists[0].name,
-              trackName: track.name,
-              uri: track.uri,
-              duration: trackDuration.join(":"),
-            };
-          }),
-        ]);
-      },
-      (err) => {
-        console.log("Error in FillTopTracks() : ", err);
-      }
-    );
+              // Return an object for each track with useful data
+              return {
+                albumUrl: smallestAlbumArt.url,
+                albumName: track.album.name,
+                artist: track.artists[0].name,
+                trackName: track.name,
+                uri: track.uri,
+                duration: trackDuration.join(":"),
+              };
+            }),
+          ]);
+        },
+        (err) => {
+          console.log("Error in FillTopTracks() : ", err);
+        }
+      );
   }
 
   // Favourite Artists => Long Term
-  function fillTopArtistData() {
+  function fillTopArtistData(termState = "long_term", trackAmount = "10") {
     // console.log(location.pathname);
-    spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 10 }).then(
-      (data) => {
-        let topArtists = data.body.items;
-        // Set Top Artist State mapping through each artist in the json response
-        setTopArtistsData([
-          ...topArtists.map((artist) => {
-            // Finds the smallest artist picture to be used as a thumbnail
-            let smallestArtistPicture = artist.images.reduce((acc, cv) => {
-              if (cv.height <= acc.height) {
-                acc = cv;
-              }
-              return acc;
-            });
-            // Return two Genres
-            let genres = artist.genres.slice(0, 2);
-            // Return an object for each artist with useful data
-            return {
-              pictureUrl: smallestArtistPicture.url,
-              followers: artist.followers.total,
-              artist: artist.name,
-              uri: artist.uri,
-              popularity: artist.popularity,
-              genres: genres,
-              id: artist.id,
-            };
-          }),
-        ]);
-      },
-      (err) => {
-        console.log("Error : .getMe() : ", err);
-      }
-    );
+    spotifyApi
+      .getMyTopArtists({ time_range: termState, limit: trackAmount })
+      .then(
+        (data) => {
+          let topArtists = data.body.items;
+          // Set Top Artist State mapping through each artist in the json response
+          setTopArtistsData([
+            ...topArtists.map((artist) => {
+              // Finds the smallest artist picture to be used as a thumbnail
+              let smallestArtistPicture = artist.images.reduce((acc, cv) => {
+                if (cv.height <= acc.height) {
+                  acc = cv;
+                }
+                return acc;
+              });
+              // Return two Genres
+              let genres = artist.genres.slice(0, 2);
+              // Return an object for each artist with useful data
+              return {
+                pictureUrl: smallestArtistPicture.url,
+                followers: artist.followers.total,
+                artist: artist.name,
+                uri: artist.uri,
+                popularity: artist.popularity,
+                genres: genres,
+                id: artist.id,
+              };
+            }),
+          ]);
+        },
+        (err) => {
+          console.log("Error : .getMe() : ", err);
+        }
+      );
   }
 
   return loading ? (
@@ -239,7 +247,7 @@ export default function Dashboard({ code }) {
               >
                 {topTracksData.map((track) => (
                   <Track
-                    key={track.trackName}
+                    key={track.trackName + Math.floor(Math.random() * 1000)}
                     track={track}
                     chooseTrack={chooseTrack}
                   />
@@ -253,12 +261,12 @@ export default function Dashboard({ code }) {
               <ContentContainer>
                 <ElementContainer
                   type={"tracks"}
-                  Link={Link}
                   triggerFillFunction={fillTopTrackData}
+                  Link={Link}
                 >
                   {topTracksData.map((track) => (
                     <Track
-                      key={track.trackName}
+                      key={track.trackName + Math.floor(Math.random() * 1000)}
                       track={track}
                       chooseTrack={chooseTrack}
                     />

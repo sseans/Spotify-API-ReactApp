@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { BsArrowsAngleExpand } from "react-icons/bs";
+import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 
 const TopTrackContainer = styled.div`
   height: fit-content;
@@ -37,6 +37,25 @@ const TopTracks = styled.div`
   position: relative;
 `;
 
+const ChildContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  max-height: 65vh;
+  overflow-y: auto;
+  /* background-color: var(--very-dark-green); */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--very-dark-green);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--gold-crayola);
+    border: 3px solid var(--very-dark-green);
+    border-radius: 10px;
+  }
+`;
+
 const TopTrackSwitcherContainer = styled.div`
   width: 100%;
   height: 25px;
@@ -63,31 +82,71 @@ const TopTrackSwitcher = styled.div`
   }
 `;
 
-export default function ElementContainer(props) {
+export default function ElementContainer({
+  type,
+  Link,
+  triggerFillFunction,
+  children,
+}) {
   const location = useLocation();
+  const [termState, setTermState] = useState("long_term");
+  const [trackAmount, setTrackAmount] = useState(
+    location.pathname === "/" ? 10 : 20
+  );
 
   useEffect(() => {
-    console.log(props);
-    props.triggerFillFunction();
-  }, [location]);
-
-  console.log(location);
+    triggerFillFunction(termState, trackAmount);
+    console.log("useEffect from element container");
+    console.log(termState, trackAmount);
+  }, [termState, location.pathname]);
 
   return (
     <TopTrackContainer>
       <TopTrackTitle>
-        {props.type === "artists" ? "Top Artists" : "Top Tracks"}
-        <props.Link to={props.type === "artists" ? "/artists" : "/tracks"}>
-          <BsArrowsAngleExpand />
-        </props.Link>
+        {type === "artists" ? "Top Artists" : "Top Tracks"}
+        {trackAmount === 20 ? (
+          <Link to="/">
+            <BsArrowsAngleContract
+              onClick={() => {
+                setTrackAmount(10);
+              }}
+            />
+          </Link>
+        ) : (
+          <Link to={type === "artists" ? "/artists" : "/tracks"}>
+            <BsArrowsAngleExpand
+              onClick={() => {
+                setTrackAmount(20);
+              }}
+            />
+          </Link>
+        )}
       </TopTrackTitle>
       <TopTracks>
         <TopTrackSwitcherContainer>
-          <TopTrackSwitcher>Long Term</TopTrackSwitcher>
-          <TopTrackSwitcher>Medium Term</TopTrackSwitcher>
-          <TopTrackSwitcher>Short Term</TopTrackSwitcher>
+          <TopTrackSwitcher
+            onClick={() => {
+              setTermState("long_term");
+            }}
+          >
+            Long Term
+          </TopTrackSwitcher>
+          <TopTrackSwitcher
+            onClick={() => {
+              setTermState("medium_term");
+            }}
+          >
+            Medium Term
+          </TopTrackSwitcher>
+          <TopTrackSwitcher
+            onClick={() => {
+              setTermState("short_term");
+            }}
+          >
+            Short Term
+          </TopTrackSwitcher>
         </TopTrackSwitcherContainer>
-        {props.children}
+        <ChildContainer>{children}</ChildContainer>
       </TopTracks>
     </TopTrackContainer>
   );
