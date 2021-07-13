@@ -28,6 +28,13 @@ const ContentContainer = styled.div`
   display: flex;
   padding: 0px 15px;
   justify-content: space-between;
+  @media screen and (max-width: 722px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    padding: 60px 15px 130px 15px;
+  }
 `;
 
 const HeaderSVG = styled.svg`

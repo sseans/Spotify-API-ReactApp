@@ -6,7 +6,7 @@ import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 const TopTrackContainer = styled.div`
   height: fit-content;
   width: 100%;
-  margin: 0 20px;
+  margin: 20px 20px;
 `;
 
 const TopTrackTitle = styled.h1`
@@ -95,9 +95,7 @@ export default function ElementContainer({
   );
 
   useEffect(() => {
-    triggerFillFunction(termState, trackAmount);
-    console.log("useEffect from element container");
-    console.log(termState, trackAmount);
+    triggerFillFunction(termState, trackAmount); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [termState, location.pathname]);
 
   return (
