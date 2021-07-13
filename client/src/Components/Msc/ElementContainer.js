@@ -69,7 +69,9 @@ const TopTrackSwitcher = styled.div`
   border-radius: 15px;
   z-index: 1;
   height: 25px;
-  width: 100px;
+  width: 25%;
+  max-width: 120px;
+  min-width: 80px;
   background-color: #354f4f;
   display: flex;
   justify-content: center;
@@ -94,12 +96,14 @@ export default function ElementContainer({
     location.pathname === "/" ? 10 : 30
   );
 
+  // Repopulates the list of Tracks/Artists when expanded or time length changes
   useEffect(() => {
     triggerFillFunction(termState, trackAmount); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [termState, location.pathname]);
 
   return (
     <TopTrackContainer>
+      {/* Title + Expand Button */}
       <TopTrackTitle>
         {type === "artists" ? "Top Artists" : "Top Tracks"}
         {trackAmount === 30 ? (
@@ -121,6 +125,7 @@ export default function ElementContainer({
         )}
       </TopTrackTitle>
       <TopTracks>
+        {/* Time Length Buttons */}
         <TopTrackSwitcherContainer>
           <TopTrackSwitcher
             onClick={() => {
@@ -144,6 +149,7 @@ export default function ElementContainer({
             Short Term
           </TopTrackSwitcher>
         </TopTrackSwitcherContainer>
+        {/* Tracks/Artists => output as individial <Tracks> */}
         <ChildContainer>{children}</ChildContainer>
       </TopTracks>
     </TopTrackContainer>
