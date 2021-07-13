@@ -65,7 +65,6 @@ const TopTrackSwitcherContainer = styled.div`
 `;
 
 const TopTrackSwitcher = styled.div`
-  /* position: absolute; */
   border-radius: 15px;
   z-index: 1;
   height: 25px;
