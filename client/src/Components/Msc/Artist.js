@@ -68,11 +68,14 @@ const ArtistGenres = styled.h2`
 `;
 
 const ArtistPopularity = styled.div`
+  min-width: 40px;
+  max-width: 80px;
   flex: 12.5%;
   font-size: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: 3px;
   svg {
     padding-left: 1px;
   }
