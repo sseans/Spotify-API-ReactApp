@@ -124,7 +124,7 @@ export default function Dashboard({ code }) {
   }
 
   // Favourite Tracks => Long Term
-  function fillTopTrackData(termState = "long_term", trackAmount = "10") {
+  function fillTopTrackData(termState = "long_term", trackAmount = 10) {
     spotifyApi
       .getMyTopTracks({ time_range: termState, limit: trackAmount })
       .then(
@@ -170,7 +170,7 @@ export default function Dashboard({ code }) {
   }
 
   // Favourite Artists => Long Term
-  function fillTopArtistData(termState = "long_term", trackAmount = "10") {
+  function fillTopArtistData(termState = "long_term", trackAmount = 10) {
     // console.log(location.pathname);
     spotifyApi
       .getMyTopArtists({ time_range: termState, limit: trackAmount })
@@ -251,6 +251,20 @@ export default function Dashboard({ code }) {
                     track={track}
                     chooseTrack={chooseTrack}
                   />
+                ))}
+              </ElementContainer>
+            ) : null}
+          </Route>
+          {/* Fav Artist - Route */}
+          <Route path="/artists">
+            {topTracksData && topArtistsData ? (
+              <ElementContainer
+                type={"artists"}
+                Link={Link}
+                triggerFillFunction={fillTopArtistData}
+              >
+                {topArtistsData.map((artist) => (
+                  <Artist key={artist.artist} artist={artist} />
                 ))}
               </ElementContainer>
             ) : null}

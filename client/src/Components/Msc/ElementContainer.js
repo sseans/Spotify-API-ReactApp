@@ -91,7 +91,7 @@ export default function ElementContainer({
   const location = useLocation();
   const [termState, setTermState] = useState("long_term");
   const [trackAmount, setTrackAmount] = useState(
-    location.pathname === "/" ? 10 : 20
+    location.pathname === "/" ? 10 : 30
   );
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function ElementContainer({
     <TopTrackContainer>
       <TopTrackTitle>
         {type === "artists" ? "Top Artists" : "Top Tracks"}
-        {trackAmount === 20 ? (
+        {trackAmount === 30 ? (
           <Link to="/">
             <BsArrowsAngleContract
               onClick={() => {
@@ -116,7 +116,7 @@ export default function ElementContainer({
           <Link to={type === "artists" ? "/artists" : "/tracks"}>
             <BsArrowsAngleExpand
               onClick={() => {
-                setTrackAmount(20);
+                setTrackAmount(30);
               }}
             />
           </Link>
