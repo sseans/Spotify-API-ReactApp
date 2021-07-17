@@ -70,6 +70,8 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
     width: 100%;
   }

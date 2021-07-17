@@ -10,6 +10,7 @@ import ElementContainer from "../Components/Msc/ElementContainer.js";
 import Track from "../Components/Msc/Track";
 import Artist from "../Components/Msc/Artist.js";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import SuggestionBuilder from "../Components/Dashboard/SuggestionBuilder/SuggestionBuilder.js";
 
 const Navbar = styled.div`
   width: 100%;
@@ -23,25 +24,38 @@ const Navbar = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  height: 100%;
+  width: 100%;
+`;
+
+const TracksContainer = styled.div`
   width: 100%;
   height: fit-content;
   display: flex;
+  justify-content: center;
   padding: 0px 15px;
-  justify-content: space-between;
   @media screen and (max-width: 722px) {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     height: auto;
-    padding: 60px 15px 130px 15px;
+    padding: 50px 15px 20px 15px;
   }
 `;
 
-const HeaderSVG = styled.svg`
-  position: absolute;
-  z-index: -1;
-  top: 0;
+const SuggestionContainer = styled.div`
   width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  padding: 0px 15px;
+  @media screen and (max-width: 722px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    padding: 0px 15px 130px 15px;
+  }
 `;
 
 const spotifyApi = new SpotifyWebApi({
@@ -220,13 +234,6 @@ export default function Dashboard({ code }) {
   ) : (
     <>
       <Router>
-        {/* SVG WAVE */}
-        <HeaderSVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path
-            fill="#EEC78C"
-            d="M0,256L40,224C80,192,160,128,240,133.3C320,139,400,213,480,218.7C560,224,640,160,720,122.7C800,85,880,75,960,69.3C1040,64,1120,64,1200,74.7C1280,85,1360,107,1400,117.3L1440,128L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
-          ></path>
-        </HeaderSVG>
         {/* Navbar Component => User + Searchbar */}
         <Navbar>
           {userData ? (
@@ -279,30 +286,39 @@ export default function Dashboard({ code }) {
           {/* Homepage Main - Route */}
           <Route path="/">
             {topTracksData && topArtistsData ? (
-              <ContentContainer>
-                <ElementContainer
-                  type={"tracks"}
-                  triggerFillFunction={fillTopTrackData}
-                  Link={Link}
-                >
-                  {topTracksData.map((track) => (
-                    <Track
-                      key={track.trackName + Math.floor(Math.random() * 1000)}
-                      track={track}
-                      chooseTrack={chooseTrack}
-                    />
-                  ))}
-                </ElementContainer>
-                <ElementContainer
-                  type={"artists"}
-                  Link={Link}
-                  triggerFillFunction={fillTopArtistData}
-                >
-                  {topArtistsData.map((artist) => (
-                    <Artist key={artist.artist} artist={artist} />
-                  ))}
-                </ElementContainer>
-              </ContentContainer>
+              <>
+                <ContentContainer>
+                  <TracksContainer>
+                    <ElementContainer
+                      type={"tracks"}
+                      triggerFillFunction={fillTopTrackData}
+                      Link={Link}
+                    >
+                      {topTracksData.map((track) => (
+                        <Track
+                          key={
+                            track.trackName + Math.floor(Math.random() * 1000)
+                          }
+                          track={track}
+                          chooseTrack={chooseTrack}
+                        />
+                      ))}
+                    </ElementContainer>
+                    <ElementContainer
+                      type={"artists"}
+                      Link={Link}
+                      triggerFillFunction={fillTopArtistData}
+                    >
+                      {topArtistsData.map((artist) => (
+                        <Artist key={artist.artist} artist={artist} />
+                      ))}
+                    </ElementContainer>
+                  </TracksContainer>
+                  <SuggestionContainer>
+                    <SuggestionBuilder />
+                  </SuggestionContainer>
+                </ContentContainer>
+              </>
             ) : null}
           </Route>
         </Switch>
