@@ -1,14 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { TiMediaPlay } from "react-icons/ti";
+import { BsPlus } from "react-icons/bs";
 
 const TrackContainer = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
+  align-items: center;
   margin: 3px 0;
   position: relative;
   cursor: pointer;
+  .icon {
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 2;
+    :hover {
+      transform: scale(1.35);
+      color: white;
+    }
+  }
   &::after {
     content: "";
     position: absolute;
@@ -88,6 +99,7 @@ export default function Track({ track, chooseTrack }) {
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
+      <BsPlus className="icon" />
       <TrackTime>
         <TiMediaPlay />
         {track.duration}

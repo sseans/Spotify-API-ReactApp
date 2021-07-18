@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { BsArrowRight, BsPlus } from "react-icons/bs";
 
 const Container = styled.div`
   height: fit-content;
@@ -12,13 +13,16 @@ const Suggestions = styled.div`
   width: 100%;
   background-color: #293d3d;
   border-radius: 15px;
-  padding: 3px;
+  padding: 25px;
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
   font-size: 0.8rem;
+  @media screen and (max-width: 722px) {
+    flex-direction: column-reverse;
+    height: fit-content;
+  }
 `;
 
 const SuggestionButton = styled.button`
@@ -48,11 +52,56 @@ const SuggestionButton = styled.button`
   }
 `;
 
+const SourceContainer = styled.div`
+  width: 60%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  svg {
+    font-size: 2rem;
+    margin-right: 10px;
+  }
+  @media screen and (max-width: 722px) {
+    width: 100%;
+  }
+`;
+
+const SuggestionSource = styled.div`
+  width: 60%;
+  height: fit-content;
+  min-height: 100px;
+  border-radius: 15px;
+  background-color: #213131;
+`;
+
+const SourceText = styled.div`
+  max-width: 150px;
+`;
+const SourceTitle = styled.h1`
+  font-size: 1rem;
+  color: white;
+`;
+const SourceInfo = styled.h2`
+  font-size: 0.7rem;
+`;
+
 export default function SuggestionBuilder() {
   return (
     <Container>
       <Suggestions>
         <SuggestionButton>recommend some tracks</SuggestionButton>
+        <SourceContainer>
+          <SourceText>
+            <SourceTitle>Based On...</SourceTitle>
+            <SourceInfo>
+              Press the + button to add a Track or Artist to base your
+              reccomendation off.
+            </SourceInfo>
+          </SourceText>
+          <BsArrowRight />
+          <SuggestionSource></SuggestionSource>
+        </SourceContainer>
       </Suggestions>
     </Container>
   );

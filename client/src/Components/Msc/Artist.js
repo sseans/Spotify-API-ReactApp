@@ -1,14 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { AiFillStar } from "react-icons/ai";
+import { BsPlus } from "react-icons/bs";
 
 const ArtistContainer = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
+  align-items: center;
   margin: 3px 0;
   position: relative;
   cursor: pointer;
+  .icon {
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 2;
+    :hover {
+      transform: scale(1.35);
+      color: white;
+    }
+  }
   &::after {
     content: "";
     position: absolute;
@@ -97,6 +108,7 @@ export default function Artist({ artist }) {
           )}
         </ArtistGenres>
       </ArtistNameContainer>
+      <BsPlus className="icon" />
       <ArtistPopularity>
         {artist.popularity}
         <AiFillStar />
