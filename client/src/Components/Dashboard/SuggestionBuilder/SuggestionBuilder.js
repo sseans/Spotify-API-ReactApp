@@ -27,6 +27,7 @@ const Suggestions = styled.div`
 
 const SuggestionButton = styled.button`
   width: fit-content;
+  min-width: fit-content;
   padding: 0 10px;
   height: 30px;
   border-radius: 15px;
@@ -53,7 +54,7 @@ const SuggestionButton = styled.button`
 `;
 
 const SourceContainer = styled.div`
-  width: 60%;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+
 import { TiMediaPlay } from "react-icons/ti";
 import { BsPlus } from "react-icons/bs";
 
@@ -90,6 +92,9 @@ const TrackTime = styled.div`
 `;
 
 export default function Track({ track, chooseTrack }) {
+  const location = useLocation();
+  const RenderPlusIcon = location.pathname === "/" ? true : false;
+
   return (
     <TrackContainer onClick={() => chooseTrack(track)}>
       <TrackAlbumArtContainer>
@@ -99,7 +104,7 @@ export default function Track({ track, chooseTrack }) {
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
-      <BsPlus className="icon" />
+      {RenderPlusIcon ? <BsPlus className="icon" /> : null}
       <TrackTime>
         <TiMediaPlay />
         {track.duration}

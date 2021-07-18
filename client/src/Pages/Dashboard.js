@@ -254,33 +254,41 @@ export default function Dashboard({ code }) {
           {/* Fav Tracks - Route */}
           <Route path="/tracks">
             {topTracksData && topArtistsData ? (
-              <ElementContainer
-                type={"tracks"}
-                Link={Link}
-                triggerFillFunction={fillTopTrackData}
-              >
-                {topTracksData.map((track) => (
-                  <Track
-                    key={track.trackName + Math.floor(Math.random() * 1000)}
-                    track={track}
-                    chooseTrack={chooseTrack}
-                  />
-                ))}
-              </ElementContainer>
+              <ContentContainer>
+                <TracksContainer>
+                  <ElementContainer
+                    type={"tracks"}
+                    Link={Link}
+                    triggerFillFunction={fillTopTrackData}
+                  >
+                    {topTracksData.map((track) => (
+                      <Track
+                        key={track.trackName + Math.floor(Math.random() * 1000)}
+                        track={track}
+                        chooseTrack={chooseTrack}
+                      />
+                    ))}
+                  </ElementContainer>
+                </TracksContainer>
+              </ContentContainer>
             ) : null}
           </Route>
           {/* Fav Artist - Route */}
           <Route path="/artists">
             {topTracksData && topArtistsData ? (
-              <ElementContainer
-                type={"artists"}
-                Link={Link}
-                triggerFillFunction={fillTopArtistData}
-              >
-                {topArtistsData.map((artist) => (
-                  <Artist key={artist.artist} artist={artist} />
-                ))}
-              </ElementContainer>
+              <ContentContainer>
+                <TracksContainer>
+                  <ElementContainer
+                    type={"artists"}
+                    Link={Link}
+                    triggerFillFunction={fillTopArtistData}
+                  >
+                    {topArtistsData.map((artist) => (
+                      <Artist key={artist.artist} artist={artist} />
+                    ))}
+                  </ElementContainer>
+                </TracksContainer>
+              </ContentContainer>
             ) : null}
           </Route>
           {/* Homepage Main - Route */}
