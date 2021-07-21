@@ -192,7 +192,6 @@ export default function Dashboard({ code }) {
 
   // Favourite Artists => Long Term
   function fillTopArtistData(termState = "long_term", trackAmount = 10) {
-    console.log(trackAmount.pathname, "dashboard");
     spotifyApi
       .getMyTopArtists({ time_range: termState, limit: trackAmount })
       .then(

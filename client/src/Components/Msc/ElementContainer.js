@@ -94,13 +94,15 @@ export default function ElementContainer({
   const [trackAmount, setTrackAmount] = useState(
     location.pathname === "/" ? 10 : 30
   );
-  console.log(trackAmount);
 
   // Repopulates the list of Tracks/Artists when expanded or time length changes
   useEffect(() => {
-    console.log(trackAmount, "in useeffect");
-    triggerFillFunction(termState, trackAmount); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [termState, location.pathname]);
+    if (location.pathname === "/") {
+      triggerFillFunction(termState, 10);
+    } else {
+      triggerFillFunction(termState, trackAmount);
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackAmount, termState, location.pathname]);
 
   return (
     <TopTrackContainer>
