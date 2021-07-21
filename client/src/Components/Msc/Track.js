@@ -91,12 +91,12 @@ const TrackTime = styled.div`
   padding-right: 3px;
 `;
 
-export default function Track({ track, chooseTrack }) {
+export default function Track({ track, chooseTrack, AddOneToRec }) {
   const location = useLocation();
   const RenderPlusIcon = location.pathname === "/" ? true : false;
 
   return (
-    <TrackContainer onClick={() => chooseTrack(track)}>
+    <TrackContainer onClick={() => (chooseTrack ? chooseTrack(track) : null)}>
       <TrackAlbumArtContainer>
         <TrackAlbumArt src={track.albumUrl} alt={track.albumName} />
       </TrackAlbumArtContainer>
@@ -104,7 +104,16 @@ export default function Track({ track, chooseTrack }) {
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
-      {RenderPlusIcon ? <BsPlus className="icon" /> : null}
+      {RenderPlusIcon ? (
+        <BsPlus
+          onClick={(event) => {
+            event.stopPropagation();
+            if (!AddOneToRec) return;
+            AddOneToRec(track);
+          }}
+          className="icon"
+        />
+      ) : null}
       <TrackTime>
         <TiMediaPlay />
         {track.duration}

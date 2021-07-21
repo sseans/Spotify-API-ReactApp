@@ -70,6 +70,7 @@ export default function Dashboard({ code }) {
   const [userData, setUserData] = useState();
   const [topTracksData, setTopTracksData] = useState();
   const [topArtistsData, setTopArtistsData] = useState();
+  const [reccomendationData, setReccomendationData] = useState();
 
   const accessToken = useAuth(code);
 
@@ -180,6 +181,7 @@ export default function Dashboard({ code }) {
                 trackName: track.name,
                 uri: track.uri,
                 duration: trackDuration.join(":"),
+                type: "track",
               };
             }),
           ]);
@@ -218,6 +220,7 @@ export default function Dashboard({ code }) {
                 popularity: artist.popularity,
                 genres: genres,
                 id: artist.id,
+                type: "artist",
               };
             }),
           ]);
@@ -226,6 +229,16 @@ export default function Dashboard({ code }) {
           console.log("Error : .getMe() : ", err);
         }
       );
+  }
+
+  function AddOneToRec(trackArtistInfo) {
+    const item = { ...trackArtistInfo, showCross: true };
+    if (!reccomendationData) {
+      setReccomendationData([item]);
+    } else {
+      if (reccomendationData.find(({ uri }) => uri === item.uri)) return;
+      setReccomendationData([...reccomendationData, item]);
+    }
   }
 
   return loading ? (
@@ -308,6 +321,7 @@ export default function Dashboard({ code }) {
                           }
                           track={track}
                           chooseTrack={chooseTrack}
+                          AddOneToRec={AddOneToRec}
                         />
                       ))}
                     </ElementContainer>
@@ -317,12 +331,19 @@ export default function Dashboard({ code }) {
                       triggerFillFunction={fillTopArtistData}
                     >
                       {topArtistsData.map((artist) => (
-                        <Artist key={artist.artist} artist={artist} />
+                        <Artist
+                          key={artist.artist}
+                          artist={artist}
+                          AddOneToRec={AddOneToRec}
+                        />
                       ))}
                     </ElementContainer>
                   </TracksContainer>
                   <SuggestionContainer>
-                    <SuggestionBuilder />
+                    <SuggestionBuilder
+                      reccomendationData={reccomendationData}
+                      setReccomendationData={setReccomendationData}
+                    />
                   </SuggestionContainer>
                 </ContentContainer>
               </>

@@ -94,7 +94,7 @@ const ArtistPopularity = styled.div`
   }
 `;
 
-export default function Artist({ artist }) {
+export default function Artist({ artist, AddOneToRec }) {
   const location = useLocation();
   const RenderPlusIcon = location.pathname === "/" ? true : false;
 
@@ -113,7 +113,15 @@ export default function Artist({ artist }) {
           )}
         </ArtistGenres>
       </ArtistNameContainer>
-      {RenderPlusIcon ? <BsPlus className="icon" /> : null}
+      {RenderPlusIcon ? (
+        <BsPlus
+          onClick={(event) => {
+            event.stopPropagation();
+            AddOneToRec(artist);
+          }}
+          className="icon"
+        />
+      ) : null}
       <ArtistPopularity>
         {artist.popularity}
         <AiFillStar />

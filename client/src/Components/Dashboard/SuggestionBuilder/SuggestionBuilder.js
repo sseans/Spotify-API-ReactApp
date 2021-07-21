@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { BsArrowRight } from "react-icons/bs";
+import Track from "../../Msc/Track";
+import Artist from "../../Msc/Artist";
 
 const Container = styled.div`
   height: fit-content;
@@ -74,9 +76,25 @@ const SourceContainer = styled.div`
 const SuggestionSource = styled.div`
   width: 60%;
   height: fit-content;
-  min-height: 100px;
   border-radius: 15px;
   background-color: #213131;
+`;
+
+const ItemContainer = styled.div`
+  max-height: 150px;
+  min-height: 100px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #213131;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--gold-crayola);
+    border: 3px solid #213131;
+    border-radius: 10px;
+  }
 `;
 
 const SourceText = styled.div`
@@ -90,7 +108,10 @@ const SourceInfo = styled.h2`
   font-size: 0.7rem;
 `;
 
-export default function SuggestionBuilder() {
+export default function SuggestionBuilder({
+  reccomendationData,
+  setReccomendationData,
+}) {
   return (
     <Container>
       <Suggestions>
@@ -104,7 +125,33 @@ export default function SuggestionBuilder() {
             </SourceInfo>
           </SourceText>
           <BsArrowRight />
-          <SuggestionSource></SuggestionSource>
+          <SuggestionSource>
+            <ItemContainer>
+              {reccomendationData
+                ? reccomendationData.map((item) => {
+                    let jsxElement;
+                    if (item.type === "artist") {
+                      jsxElement = (
+                        <Artist
+                          key={item.artist + Math.floor(Math.random() * 1000)}
+                          artist={item}
+                        />
+                      );
+                    } else if (item.type === "track") {
+                      jsxElement = (
+                        <Track
+                          key={
+                            item.trackName + Math.floor(Math.random() * 1000)
+                          }
+                          track={item}
+                        />
+                      );
+                    }
+                    return jsxElement;
+                  })
+                : null}
+            </ItemContainer>
+          </SuggestionSource>
         </SourceContainer>
       </Suggestions>
     </Container>

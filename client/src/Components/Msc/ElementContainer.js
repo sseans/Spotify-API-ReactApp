@@ -100,7 +100,7 @@ export default function ElementContainer({
     if (location.pathname === "/") {
       triggerFillFunction(termState, 10);
     } else {
-      triggerFillFunction(termState, trackAmount);
+      triggerFillFunction(termState, 30);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trackAmount, termState, location.pathname]);
 
