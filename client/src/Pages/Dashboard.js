@@ -180,8 +180,9 @@ export default function Dashboard({ code }) {
                 artist: track.artists[0].name,
                 trackName: track.name,
                 uri: track.uri,
+                id: track.id,
                 duration: trackDuration.join(":"),
-                type: "track",
+                type: track.type,
               };
             }),
           ]);
@@ -199,6 +200,7 @@ export default function Dashboard({ code }) {
       .then(
         (data) => {
           let topArtists = data.body.items;
+          console.log(topArtists);
           // Set Top Artist State mapping through each artist in the json response
           setTopArtistsData([
             ...topArtists.map((artist) => {
@@ -220,7 +222,7 @@ export default function Dashboard({ code }) {
                 popularity: artist.popularity,
                 genres: genres,
                 id: artist.id,
-                type: "artist",
+                type: artist.type,
               };
             }),
           ]);
@@ -236,6 +238,7 @@ export default function Dashboard({ code }) {
     if (!reccomendationData) {
       setReccomendationData([item]);
     } else {
+      if (reccomendationData.length >= 5) return;
       if (reccomendationData.find(({ uri }) => uri === item.uri)) return;
       setReccomendationData([...reccomendationData, item]);
     }
@@ -245,6 +248,32 @@ export default function Dashboard({ code }) {
     setReccomendationData(
       reccomendationData.filter((item) => item.uri !== trackArtistInfo.uri)
     );
+  }
+
+  function fillReccomendations() {
+    if (!reccomendationData) return;
+    let seedArtistData = reccomendationData
+      .filter((item) => item.type === "artist")
+      .map((item) => item.id);
+    let seedTrackData = reccomendationData
+      .filter((item) => item.type === "track")
+      .map((item) => item.id);
+    console.log(seedArtistData, seedTrackData);
+    spotifyApi
+      .getRecommendations({
+        min_energy: 0.4,
+        seed_artists: seedArtistData,
+        seed_tracks: seedTrackData,
+        min_popularity: 50,
+      })
+      .then(
+        (data) => {
+          console.log(data);
+        },
+        (err) => {
+          console.log("Error : .getMe() : ", err);
+        }
+      );
   }
 
   return loading ? (
@@ -351,6 +380,7 @@ export default function Dashboard({ code }) {
                       reccomendationData={reccomendationData}
                       setReccomendationData={setReccomendationData}
                       removeOneFromRec={removeOneFromRec}
+                      fillReccomendations={fillReccomendations}
                     />
                   </SuggestionContainer>
                 </ContentContainer>

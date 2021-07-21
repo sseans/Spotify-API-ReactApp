@@ -113,11 +113,18 @@ export default function SuggestionBuilder({
   reccomendationData,
   setReccomendationData,
   removeOneFromRec,
+  fillReccomendations,
 }) {
   return (
     <Container>
       <Suggestions>
-        <SuggestionButton>recommend some tracks</SuggestionButton>
+        <SuggestionButton
+          onClick={() => {
+            fillReccomendations();
+          }}
+        >
+          recommend some tracks
+        </SuggestionButton>
         <SourceContainer>
           <SourceText>
             <SourceTitle>Based On...</SourceTitle>
