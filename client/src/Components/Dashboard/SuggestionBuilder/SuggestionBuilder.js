@@ -64,7 +64,7 @@ const SourceContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  svg {
+  .arrowright {
     font-size: 2rem;
     margin-right: 10px;
   }
@@ -126,7 +126,7 @@ export default function SuggestionBuilder({
               reccomendation off.
             </SourceInfo>
           </SourceText>
-          <BsArrowRight />
+          <BsArrowRight className="arrowright" />
           <SuggestionSource>
             <ItemContainer>
               {reccomendationData
