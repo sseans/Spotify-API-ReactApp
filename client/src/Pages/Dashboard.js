@@ -242,7 +242,9 @@ export default function Dashboard({ code }) {
   }
 
   function removeOneFromRec(trackArtistInfo) {
-    console.log(trackArtistInfo);
+    setReccomendationData(
+      reccomendationData.filter((item) => item.uri !== trackArtistInfo.uri)
+    );
   }
 
   return loading ? (
@@ -343,6 +345,7 @@ export default function Dashboard({ code }) {
                       ))}
                     </ElementContainer>
                   </TracksContainer>
+                  {/* Reccomendations */}
                   <SuggestionContainer>
                     <SuggestionBuilder
                       reccomendationData={reccomendationData}
