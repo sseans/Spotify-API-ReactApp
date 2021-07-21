@@ -21,11 +21,27 @@ const Navbar = styled.div`
   z-index: 99;
   display: flex;
   align-items: center;
+  background-color: var(--very-dark-green);
 `;
 
 const ContentContainer = styled.div`
-  height: 100%;
+  position: absolute;
+  top: 0;
+  padding-top: 70px;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
   width: 100%;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--dark-slate-green);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--gold-crayola);
+    border: 3px solid var(--dark-slate-green);
+    border-radius: 10px;
+  }
 `;
 
 const TracksContainer = styled.div`
@@ -200,7 +216,6 @@ export default function Dashboard({ code }) {
       .then(
         (data) => {
           let topArtists = data.body.items;
-          console.log(topArtists);
           // Set Top Artist State mapping through each artist in the json response
           setTopArtistsData([
             ...topArtists.map((artist) => {
@@ -258,7 +273,6 @@ export default function Dashboard({ code }) {
     let seedTrackData = reccomendationData
       .filter((item) => item.type === "track")
       .map((item) => item.id);
-    console.log(seedArtistData, seedTrackData);
     spotifyApi
       .getRecommendations({
         min_energy: 0.4,

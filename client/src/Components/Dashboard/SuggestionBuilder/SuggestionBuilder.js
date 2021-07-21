@@ -108,6 +108,11 @@ const SourceTitle = styled.h1`
 const SourceInfo = styled.h2`
   font-size: 0.7rem;
 `;
+const SourceMax = styled.h3`
+  font-size: 0.6rem;
+  padding-top: 4px;
+  color: #93b7be;
+`;
 
 export default function SuggestionBuilder({
   reccomendationData,
@@ -132,6 +137,7 @@ export default function SuggestionBuilder({
               Press the + button to add a Track or Artist to base your
               reccomendation off.
             </SourceInfo>
+            <SourceMax>5 Item Max.</SourceMax>
           </SourceText>
           <BsArrowRight className="arrowright" />
           <SuggestionSource>
