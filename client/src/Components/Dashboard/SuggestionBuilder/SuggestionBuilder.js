@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BsArrowRight, BsPlus } from "react-icons/bs";
+import { BsArrowRight } from "react-icons/bs";
 
 const Container = styled.div`
   height: fit-content;
@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Suggestions = styled.div`
-  height: 150px;
+  min-height: 150px;
   width: 100%;
   background-color: #293d3d;
   border-radius: 15px;
@@ -50,6 +50,9 @@ const SuggestionButton = styled.button`
   }
   &:active {
     background-color: #199e48;
+  }
+  @media screen and (max-width: 722px) {
+    margin: 30px 0 0 0;
   }
 `;
 

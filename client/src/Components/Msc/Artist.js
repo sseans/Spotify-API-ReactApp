@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+
 import { AiFillStar } from "react-icons/ai";
 import { BsPlus } from "react-icons/bs";
 
@@ -93,6 +95,9 @@ const ArtistPopularity = styled.div`
 `;
 
 export default function Artist({ artist }) {
+  const location = useLocation();
+  const RenderPlusIcon = location.pathname === "/" ? true : false;
+
   return (
     <ArtistContainer>
       <ArtistImageContainer>
@@ -108,7 +113,7 @@ export default function Artist({ artist }) {
           )}
         </ArtistGenres>
       </ArtistNameContainer>
-      <BsPlus className="icon" />
+      {RenderPlusIcon ? <BsPlus className="icon" /> : null}
       <ArtistPopularity>
         {artist.popularity}
         <AiFillStar />
