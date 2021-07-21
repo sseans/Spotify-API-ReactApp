@@ -231,7 +231,7 @@ export default function Dashboard({ code }) {
       );
   }
 
-  function AddOneToRec(trackArtistInfo) {
+  function addOneToRec(trackArtistInfo) {
     const item = { ...trackArtistInfo, showCross: true };
     if (!reccomendationData) {
       setReccomendationData([item]);
@@ -239,6 +239,10 @@ export default function Dashboard({ code }) {
       if (reccomendationData.find(({ uri }) => uri === item.uri)) return;
       setReccomendationData([...reccomendationData, item]);
     }
+  }
+
+  function removeOneFromRec(trackArtistInfo) {
+    console.log(trackArtistInfo);
   }
 
   return loading ? (
@@ -321,7 +325,7 @@ export default function Dashboard({ code }) {
                           }
                           track={track}
                           chooseTrack={chooseTrack}
-                          AddOneToRec={AddOneToRec}
+                          addOneToRec={addOneToRec}
                         />
                       ))}
                     </ElementContainer>
@@ -334,7 +338,7 @@ export default function Dashboard({ code }) {
                         <Artist
                           key={artist.artist}
                           artist={artist}
-                          AddOneToRec={AddOneToRec}
+                          addOneToRec={addOneToRec}
                         />
                       ))}
                     </ElementContainer>
@@ -343,6 +347,7 @@ export default function Dashboard({ code }) {
                     <SuggestionBuilder
                       reccomendationData={reccomendationData}
                       setReccomendationData={setReccomendationData}
+                      removeOneFromRec={removeOneFromRec}
                     />
                   </SuggestionContainer>
                 </ContentContainer>

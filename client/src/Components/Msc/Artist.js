@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { AiFillStar } from "react-icons/ai";
 import { BsPlus } from "react-icons/bs";
+import { IoClose } from "react-icons/io5";
 
 const ArtistContainer = styled.div`
   width: 100%;
@@ -94,7 +95,7 @@ const ArtistPopularity = styled.div`
   }
 `;
 
-export default function Artist({ artist, AddOneToRec }) {
+export default function Artist({ artist, addOneToRec, removeOneFromRec }) {
   const location = useLocation();
   const RenderPlusIcon = location.pathname === "/" ? true : false;
 
@@ -113,11 +114,21 @@ export default function Artist({ artist, AddOneToRec }) {
           )}
         </ArtistGenres>
       </ArtistNameContainer>
-      {RenderPlusIcon ? (
+      {RenderPlusIcon && !artist.showCross ? (
         <BsPlus
           onClick={(event) => {
             event.stopPropagation();
-            AddOneToRec(artist);
+            if (!addOneToRec) return;
+            addOneToRec(artist);
+          }}
+          className="icon"
+        />
+      ) : artist.showCross ? (
+        <IoClose
+          onClick={(event) => {
+            event.stopPropagation();
+            if (!removeOneFromRec) return;
+            removeOneFromRec(artist);
           }}
           className="icon"
         />

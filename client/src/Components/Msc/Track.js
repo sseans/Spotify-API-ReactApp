@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { TiMediaPlay } from "react-icons/ti";
 import { BsPlus } from "react-icons/bs";
+import { IoClose } from "react-icons/io5";
 
 const TrackContainer = styled.div`
   width: 100%;
@@ -91,7 +92,12 @@ const TrackTime = styled.div`
   padding-right: 3px;
 `;
 
-export default function Track({ track, chooseTrack, AddOneToRec }) {
+export default function Track({
+  track,
+  chooseTrack,
+  addOneToRec,
+  removeOneFromRec,
+}) {
   const location = useLocation();
   const RenderPlusIcon = location.pathname === "/" ? true : false;
 
@@ -104,12 +110,21 @@ export default function Track({ track, chooseTrack, AddOneToRec }) {
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
-      {RenderPlusIcon ? (
+      {RenderPlusIcon && !track.showCross ? (
         <BsPlus
           onClick={(event) => {
             event.stopPropagation();
-            if (!AddOneToRec) return;
-            AddOneToRec(track);
+            if (!addOneToRec) return;
+            addOneToRec(track);
+          }}
+          className="icon"
+        />
+      ) : track.showCross ? (
+        <IoClose
+          onClick={(event) => {
+            event.stopPropagation();
+            if (!removeOneFromRec) return;
+            removeOneFromRec(track);
           }}
           className="icon"
         />

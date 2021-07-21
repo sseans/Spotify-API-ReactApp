@@ -78,6 +78,7 @@ const SuggestionSource = styled.div`
   height: fit-content;
   border-radius: 15px;
   background-color: #213131;
+  overflow: hidden;
 `;
 
 const ItemContainer = styled.div`
@@ -111,6 +112,7 @@ const SourceInfo = styled.h2`
 export default function SuggestionBuilder({
   reccomendationData,
   setReccomendationData,
+  removeOneFromRec,
 }) {
   return (
     <Container>
@@ -135,6 +137,7 @@ export default function SuggestionBuilder({
                         <Artist
                           key={item.artist + Math.floor(Math.random() * 1000)}
                           artist={item}
+                          removeOneFromRec={removeOneFromRec}
                         />
                       );
                     } else if (item.type === "track") {
@@ -144,6 +147,7 @@ export default function SuggestionBuilder({
                             item.trackName + Math.floor(Math.random() * 1000)
                           }
                           track={item}
+                          removeOneFromRec={removeOneFromRec}
                         />
                       );
                     }
