@@ -40,7 +40,7 @@ const SuggestionButton = styled.button`
   border: none;
   letter-spacing: 0.1rem;
   cursor: pointer;
-  margin: 30px;
+  margin: 0 15px 0 0;
   padding-top: 1px;
   display: flex;
   justify-content: center;
@@ -67,9 +67,13 @@ const SourceContainer = styled.div`
   .arrowright {
     font-size: 2rem;
     margin-right: 10px;
+    @media screen and (max-width: 722px) {
+      display: none;
+    }
   }
   @media screen and (max-width: 722px) {
     width: 100%;
+    flex-direction: column;
   }
 `;
 
@@ -79,6 +83,10 @@ const SuggestionSource = styled.div`
   border-radius: 15px;
   background-color: #213131;
   overflow: hidden;
+  @media screen and (max-width: 722px) {
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 
 const ItemContainer = styled.div`

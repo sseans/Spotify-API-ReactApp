@@ -42,6 +42,9 @@ const ContentContainer = styled.div`
     border: 3px solid var(--dark-slate-green);
     border-radius: 10px;
   }
+  @media screen and (max-width: 722px) {
+    padding-top: 25px;
+  }
 `;
 
 const TracksContainer = styled.div`
@@ -248,17 +251,22 @@ export default function Dashboard({ code }) {
       );
   }
 
+  // Add one track to reccomendation state
   function addOneToRec(trackArtistInfo) {
+    // Add a value (showcross) to the object used in reccomendation component
     const item = { ...trackArtistInfo, showCross: true };
     if (!reccomendationData) {
+      // if array is empty add first item
       setReccomendationData([item]);
     } else {
+      // Limits the array to 5 => Stops duplicates by uri => set state with new item
       if (reccomendationData.length >= 5) return;
       if (reccomendationData.find(({ uri }) => uri === item.uri)) return;
       setReccomendationData([...reccomendationData, item]);
     }
   }
 
+  // Remove one track from reccomendation state
   function removeOneFromRec(trackArtistInfo) {
     setReccomendationData(
       reccomendationData.filter((item) => item.uri !== trackArtistInfo.uri)
