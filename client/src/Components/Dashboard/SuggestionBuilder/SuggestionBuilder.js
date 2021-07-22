@@ -128,10 +128,46 @@ const Results = styled.div`
 `;
 
 const ResultsInner = styled.div`
-  margin: 0px 25px 25px 25px;
+  margin: 0px 25px 0px 25px;
   padding: 5px 0;
   background-color: #213131;
   border-radius: 15px;
+`;
+
+const MakePlaylistContainer = styled.div`
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MakePlaylistButton = styled.button`
+  width: fit-content;
+  min-width: fit-content;
+  padding: 0 10px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #1db954;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: none;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  margin: 0 15px 0 0;
+  padding-top: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  text-decoration: none;
+  &:hover {
+    background-color: #1ed760;
+  }
+  &:active {
+    background-color: #199e48;
+  }
 `;
 
 export default function SuggestionBuilder({
@@ -194,17 +230,22 @@ export default function SuggestionBuilder({
         </SourceContainer>
       </Suggestions>
       <Results>
-        <ResultsInner>
-          {reccomendations
-            ? reccomendations.map((track) => (
+        {reccomendations ? (
+          <>
+            <ResultsInner>
+              {reccomendations.map((track) => (
                 <Track
                   key={track.trackName + Math.floor(Math.random() * 1000)}
                   track={track}
                   chooseTrack={chooseTrack}
                 />
-              ))
-            : null}
-        </ResultsInner>
+              ))}
+            </ResultsInner>
+            <MakePlaylistContainer>
+              <MakePlaylistButton>Make Into A Playlist</MakePlaylistButton>
+            </MakePlaylistContainer>
+          </>
+        ) : null}
       </Results>
     </Container>
   );

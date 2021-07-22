@@ -29,7 +29,6 @@ const ContentContainer = styled.div`
   top: 0;
   padding-top: 70px;
   height: calc(100vh - 65px);
-  border: red 1px solid;
   overflow-y: auto;
   width: 100%;
   &::-webkit-scrollbar {
