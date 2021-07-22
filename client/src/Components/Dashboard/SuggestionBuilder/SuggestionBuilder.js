@@ -8,13 +8,13 @@ const Container = styled.div`
   height: fit-content;
   width: 100%;
   margin: 20px 20px;
+  background-color: #293d3d;
+  border-radius: 15px;
 `;
 
 const Suggestions = styled.div`
   min-height: 150px;
   width: 100%;
-  background-color: #293d3d;
-  border-radius: 15px;
   padding: 25px;
   position: relative;
   display: flex;
@@ -122,11 +122,25 @@ const SourceMax = styled.h3`
   color: #93b7be;
 `;
 
+const Results = styled.div`
+  height: fit-content;
+  width: 100%;
+`;
+
+const ResultsInner = styled.div`
+  margin: 0px 25px 25px 25px;
+  padding: 5px 0;
+  background-color: #213131;
+  border-radius: 15px;
+`;
+
 export default function SuggestionBuilder({
   reccomendationData,
   setReccomendationData,
   removeOneFromRec,
   fillReccomendations,
+  reccomendations,
+  chooseTrack,
 }) {
   return (
     <Container>
@@ -179,6 +193,19 @@ export default function SuggestionBuilder({
           </SuggestionSource>
         </SourceContainer>
       </Suggestions>
+      <Results>
+        <ResultsInner>
+          {reccomendations
+            ? reccomendations.map((track) => (
+                <Track
+                  key={track.trackName + Math.floor(Math.random() * 1000)}
+                  track={track}
+                  chooseTrack={chooseTrack}
+                />
+              ))
+            : null}
+        </ResultsInner>
+      </Results>
     </Container>
   );
 }

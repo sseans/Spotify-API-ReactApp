@@ -29,6 +29,7 @@ const ContentContainer = styled.div`
   top: 0;
   padding-top: 70px;
   height: calc(100vh - 65px);
+  border: red 1px solid;
   overflow-y: auto;
   width: 100%;
   &::-webkit-scrollbar {
@@ -90,6 +91,7 @@ export default function Dashboard({ code }) {
   const [topTracksData, setTopTracksData] = useState();
   const [topArtistsData, setTopArtistsData] = useState();
   const [reccomendationData, setReccomendationData] = useState();
+  const [reccomendations, setReccomendations] = useState();
 
   const accessToken = useAuth(code);
 
@@ -290,7 +292,40 @@ export default function Dashboard({ code }) {
       })
       .then(
         (data) => {
-          console.log(data);
+          let tracks = data.body.tracks;
+          setReccomendations([
+            ...tracks.map((track) => {
+              // Finds the smallest album art to be used as a thumbnail
+              let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
+                if (cv.height <= acc.height) {
+                  acc = cv;
+                }
+                return acc;
+              });
+              // Converts TrackDuration in Millisecs to minute:second form
+              let trackDuration = (track.duration_ms / 1000 / 60)
+                .toString()
+                .split(".");
+              trackDuration[1] = Math.round(
+                parseFloat("0." + trackDuration[1]) * 60
+              ).toString();
+              // This adds a '0' to the front of the seconds if it returns a single digit
+              if (trackDuration[1] < 10) {
+                trackDuration[1] = "0" + trackDuration[1];
+              }
+              // Return an object for each track with useful data
+              return {
+                albumUrl: smallestAlbumArt.url,
+                albumName: track.album.name,
+                artist: track.artists[0].name,
+                trackName: track.name,
+                uri: track.uri,
+                id: track.id,
+                duration: trackDuration.join(":"),
+                type: track.type,
+              };
+            }),
+          ]);
         },
         (err) => {
           console.log("Error : .getMe() : ", err);
@@ -403,6 +438,8 @@ export default function Dashboard({ code }) {
                       setReccomendationData={setReccomendationData}
                       removeOneFromRec={removeOneFromRec}
                       fillReccomendations={fillReccomendations}
+                      reccomendations={reccomendations}
+                      chooseTrack={chooseTrack}
                     />
                   </SuggestionContainer>
                 </ContentContainer>
