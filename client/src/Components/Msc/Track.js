@@ -73,12 +73,18 @@ const TrackNameContainer = styled.div`
 const TrackName = styled.h1`
   font-size: 0.75rem;
   color: #dce7e5;
+  @media screen and (max-width: 722px) {
+    font-size: 0.65rem;
+  }
 `;
 
 const TrackArtist = styled.h2`
   font-size: 0.6rem;
   opacity: 0.7;
   color: #93b7be;
+  @media screen and (max-width: 722px) {
+    font-size: 0.55rem;
+  }
 `;
 
 const TrackTime = styled.div`
