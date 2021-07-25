@@ -40,7 +40,7 @@ const TopTracks = styled.div`
 const ChildContainer = styled.div`
   height: 100%;
   width: 100%;
-  max-height: 65vh;
+  max-height: calc(100vh - 360px);
   overflow-y: auto;
   /* background-color: var(--very-dark-green); */
   &::-webkit-scrollbar {

@@ -8,6 +8,9 @@ const SearchContainer = styled.div`
   position: relative;
   width: 40%;
   margin: 0 15px;
+  @media screen and (max-width: 722px) {
+    width: 80%;
+  }
 `;
 
 const SearchResultRoundedCornerDiv = styled.div`

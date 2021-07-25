@@ -43,6 +43,7 @@ const MakePlaylistInstructionText = styled.div`
   font-size: 0.7rem;
   padding-top: 15px;
   font-weight: bold;
+  text-align: center;
 `;
 
 const MakePlaylistInfo = styled.form`

@@ -26,11 +26,15 @@ const Navbar = styled.div`
 
 const ContentContainer = styled.div`
   position: absolute;
-  top: 0;
-  padding-top: 70px;
-  height: calc(100vh - 65px);
+  top: 70px;
+  padding-top: 0px;
+  height: calc(100vh - 134px);
   overflow-y: auto;
   width: 100%;
+  display: flex;
+  /* align-items: center; */
+  justify-content: flex-start;
+  flex-direction: column;
   &::-webkit-scrollbar {
     width: 12px;
   }
@@ -38,16 +42,14 @@ const ContentContainer = styled.div`
     background: var(--dark-slate-green);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--gold-crayola);
+    background-color: #213131;
     border: 3px solid var(--dark-slate-green);
     border-radius: 10px;
-  }
-  @media screen and (max-width: 722px) {
-    padding-top: 25px;
   }
 `;
 
 const TracksContainer = styled.div`
+  margin: auto;
   width: 100%;
   height: fit-content;
   display: flex;
@@ -58,11 +60,12 @@ const TracksContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     height: auto;
-    padding: 50px 15px 20px 15px;
+    padding: 0px 15px 5px 15px;
   }
 `;
 
 const SuggestionContainer = styled.div`
+  margin: auto;
   width: 100%;
   height: fit-content;
   display: flex;
@@ -73,7 +76,7 @@ const SuggestionContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     height: auto;
-    padding: 0px 15px 130px 15px;
+    padding: 0px 15px 60px 15px;
   }
 `;
 
