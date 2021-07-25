@@ -39,6 +39,11 @@ const MakePlaylistButton = styled.button`
   }
 `;
 
+const MakePlaylistInstructionText = styled.div`
+  font-size: 0.7rem;
+  padding-top: 15px;
+`;
+
 const MakePlaylistInfo = styled.form`
   .padding {
     padding-top: 15px;
@@ -122,7 +127,11 @@ export default function CreatePlaylist({ addReccomendationsToPlaylist }) {
             Submit
           </SubmitButton>
         </>
-      ) : null}
+      ) : (
+        <MakePlaylistInstructionText>
+          Check your spotify account after submitting!
+        </MakePlaylistInstructionText>
+      )}
     </MakePlaylistContainer>
   );
 }
