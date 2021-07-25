@@ -332,6 +332,26 @@ export default function Dashboard({ code }) {
       );
   }
 
+  function addReccomendationsToPlaylist(name, desc) {
+    spotifyApi
+      .createPlaylist(name, {
+        description: desc,
+        collaborative: false,
+        public: true,
+      })
+      .then(
+        (data) => {
+          let playlistID = data.body.id;
+          let tracksArray = reccomendations.map(({ uri }) => uri);
+          spotifyApi.addTracksToPlaylist(playlistID, tracksArray);
+          console.log(data);
+        },
+        (err) => {
+          console.log("Error: addRecToPlaylist", err);
+        }
+      );
+  }
+
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
@@ -439,6 +459,9 @@ export default function Dashboard({ code }) {
                       fillReccomendations={fillReccomendations}
                       reccomendations={reccomendations}
                       chooseTrack={chooseTrack}
+                      addReccomendationsToPlaylist={
+                        addReccomendationsToPlaylist
+                      }
                     />
                   </SuggestionContainer>
                 </ContentContainer>

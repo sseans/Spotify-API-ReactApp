@@ -77,8 +77,10 @@ const SubmitButton = styled(MakePlaylistButton)`
   margin-top: 20px;
 `;
 
-export default function CreatePlaylist() {
+export default function CreatePlaylist({ addReccomendationsToPlaylist }) {
   const [showPlaylistInfo, setShowPlaylistInfo] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [descInput, setDescInput] = useState("");
 
   return (
     <MakePlaylistContainer>
@@ -96,18 +98,27 @@ export default function CreatePlaylist() {
                 type="text"
                 name="Playlist Name"
                 id="playlist_name"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
               />
             </MakePlaylistTextContainer>
             <MakePlaylistTextContainer>
               <MakePlaylistText>Description:</MakePlaylistText>
               <MakePlaylistInput
                 type="text"
-                name="Playlist Name"
-                id="playlist_name"
+                name="Playlist Description"
+                id="playlist_desc"
+                value={descInput}
+                onChange={(e) => setDescInput(e.target.value)}
               />
             </MakePlaylistTextContainer>
           </MakePlaylistInfo>
-          <SubmitButton onClick={() => console.log("beep")}>
+          <SubmitButton
+            onClick={() => {
+              if (!nameInput) return;
+              addReccomendationsToPlaylist(nameInput, descInput);
+            }}
+          >
             Submit
           </SubmitButton>
         </>

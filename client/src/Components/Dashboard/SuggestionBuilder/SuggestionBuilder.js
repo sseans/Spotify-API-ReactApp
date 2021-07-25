@@ -142,6 +142,7 @@ export default function SuggestionBuilder({
   fillReccomendations,
   reccomendations,
   chooseTrack,
+  addReccomendationsToPlaylist,
 }) {
   return (
     <Container>
@@ -206,7 +207,9 @@ export default function SuggestionBuilder({
                 />
               ))}
             </ResultsInner>
-            <CreatePlaylist />
+            <CreatePlaylist
+              addReccomendationsToPlaylist={addReccomendationsToPlaylist}
+            />
           </>
         ) : null}
       </Results>
