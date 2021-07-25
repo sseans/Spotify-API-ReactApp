@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import SearchResult from "./SearchResult";
+// import SearchResult from "./SearchResult";
+import Track from "../../Msc/Track";
 import SearchBar from "./SearchBar.js";
 
 const SearchContainer = styled.div`
@@ -76,6 +77,7 @@ export default function Search({
   pickFirstTrack,
   searchResults,
   chooseTrack,
+  addOneToRec,
 }) {
   return (
     <>
@@ -91,10 +93,11 @@ export default function Search({
             <SearchResultsContainer>
               {searchResults.map((track) => {
                 return (
-                  <SearchResult
-                    chooseTrack={chooseTrack}
-                    key={track.uri}
+                  <Track
+                    key={track.trackName + Math.floor(Math.random() * 1000)}
                     track={track}
+                    chooseTrack={chooseTrack}
+                    addOneToRec={addOneToRec}
                   />
                 );
               })}
