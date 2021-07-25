@@ -274,14 +274,18 @@ export default function Dashboard({ code }) {
     );
   }
 
+  // Use seed tracks & artists => Create list of 20 tracks from that
   function fillReccomendations() {
     if (!reccomendationData) return;
+    // Filters out non 'artist' items => removes everything but the item.id
     let seedArtistData = reccomendationData
       .filter((item) => item.type === "artist")
       .map((item) => item.id);
+    // Filters out non 'track' items => removes everything but the item.id
     let seedTrackData = reccomendationData
       .filter((item) => item.type === "track")
       .map((item) => item.id);
+    // Makes api request
     spotifyApi
       .getRecommendations({
         min_energy: 0.4,
@@ -290,6 +294,7 @@ export default function Dashboard({ code }) {
         min_popularity: 50,
       })
       .then(
+        // Modifies response data and sets to state
         (data) => {
           let tracks = data.body.tracks;
           setReccomendations([
@@ -333,6 +338,7 @@ export default function Dashboard({ code }) {
   }
 
   function addReccomendationsToPlaylist(name, desc) {
+    // Create playlist
     spotifyApi
       .createPlaylist(name, {
         description: desc,
@@ -341,10 +347,10 @@ export default function Dashboard({ code }) {
       })
       .then(
         (data) => {
+          // Add songs to created playlist
           let playlistID = data.body.id;
           let tracksArray = reccomendations.map(({ uri }) => uri);
           spotifyApi.addTracksToPlaylist(playlistID, tracksArray);
-          console.log(data);
         },
         (err) => {
           console.log("Error: addRecToPlaylist", err);
