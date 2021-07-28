@@ -361,25 +361,11 @@ export default function Dashboard({ code }) {
     }
   }
 
-  function changeLikeStatusOfTrack(desiredStatusOfTrack, trackData) {
+  async function changeLikeStatusOfTrack(desiredStatusOfTrack, trackData) {
     if (desiredStatusOfTrack === true) {
-      spotifyApi.addToMySavedTracks([trackData.id]).then(
-        (data) => {
-          return;
-        },
-        (err) => {
-          console.log("Error: With changing Like status", err);
-        }
-      );
+      await spotifyApi.addToMySavedTracks([trackData.id]);
     } else if (desiredStatusOfTrack === false) {
-      spotifyApi.removeFromMySavedTracks([trackData.id]).then(
-        (data) => {
-          return;
-        },
-        (err) => {
-          console.log("Error: With changing Like status", err);
-        }
-      );
+      await spotifyApi.removeFromMySavedTracks([trackData.id]);
     }
   }
 
