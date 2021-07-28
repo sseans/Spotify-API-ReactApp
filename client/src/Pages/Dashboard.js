@@ -126,42 +126,14 @@ export default function Dashboard({ code }) {
     let cancel = false;
     spotifyApi.searchTracks(search).then((res) => {
       if (cancel) return;
-      // Set search results usestate
-      setSearchResults(
-        res.body.tracks.items.map((track) => {
-          // Finds the smallest album art to be used as a thumbnail
-          let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
-            if (cv.height <= acc.height) {
-              acc = cv;
-            }
-            return acc;
-          });
-          // Converts TrackDuration in Millisecs to minute:second form
-          let trackDuration = (track.duration_ms / 1000 / 60)
-            .toString()
-            .split(".");
-          trackDuration[1] = Math.round(
-            parseFloat("0." + trackDuration[1]) * 60
-          ).toString();
-          // This adds a '0' to the front of the seconds if it returns a single digit
-          if (trackDuration[1] < 10) {
-            trackDuration[1] = "0" + trackDuration[1];
-          }
-          // Return an object for each track with useful data
-          return {
-            albumUrl: smallestAlbumArt.url,
-            albumName: track.album.name,
-            artist: track.artists[0].name,
-            trackName: track.name,
-            uri: track.uri,
-            id: track.id,
-            duration: trackDuration.join(":"),
-            type: track.type,
-          };
-        })
-      );
+      let searchResultArray = res.body.tracks.items;
+      // Builds {} array with useful data => add to search results state
+      buildTrackObjects(searchResultArray).then((trackObjects) => {
+        setSearchResults(trackObjects);
+      });
     });
     return () => (cancel = true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, accessToken]);
 
   // Get User Data for currently logged in user
@@ -182,13 +154,14 @@ export default function Dashboard({ code }) {
     );
   }
 
-  // Favourite Tracks => Long Term
+  // Get favourite tracks from spotify => create an {} array => set to state
   function fillTopTrackData(termState = "long_term", trackAmount = 10) {
     spotifyApi
       .getMyTopTracks({ time_range: termState, limit: trackAmount })
       .then(
         (data) => {
           let topTracks = data.body.items;
+          // Builds the array of objects with useful data => add to state
           buildTrackObjects(topTracks).then((trackObjects) => {
             setTopTracksData(trackObjects);
           });
@@ -199,7 +172,7 @@ export default function Dashboard({ code }) {
       );
   }
 
-  // Favourite Artists => Long Term
+  // Get favourite artists from spotify => create an {} array => set to state
   function fillTopArtistData(termState = "long_term", trackAmount = 10) {
     spotifyApi
       .getMyTopArtists({ time_range: termState, limit: trackAmount })
@@ -283,39 +256,10 @@ export default function Dashboard({ code }) {
         // Modifies response data and sets to state
         (data) => {
           let tracks = data.body.tracks;
-          setReccomendations([
-            ...tracks.map((track) => {
-              // Finds the smallest album art to be used as a thumbnail
-              let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
-                if (cv.height <= acc.height) {
-                  acc = cv;
-                }
-                return acc;
-              });
-              // Converts TrackDuration in Millisecs to minute:second form
-              let trackDuration = (track.duration_ms / 1000 / 60)
-                .toString()
-                .split(".");
-              trackDuration[1] = Math.round(
-                parseFloat("0." + trackDuration[1]) * 60
-              ).toString();
-              // This adds a '0' to the front of the seconds if it returns a single digit
-              if (trackDuration[1] < 10) {
-                trackDuration[1] = "0" + trackDuration[1];
-              }
-              // Return an object for each track with useful data
-              return {
-                albumUrl: smallestAlbumArt.url,
-                albumName: track.album.name,
-                artist: track.artists[0].name,
-                trackName: track.name,
-                uri: track.uri,
-                id: track.id,
-                duration: trackDuration.join(":"),
-                type: track.type,
-              };
-            }),
-          ]);
+          // Builds the array of objects with useful data => add to state
+          buildTrackObjects(tracks).then((trackObjects) => {
+            setReccomendations(trackObjects);
+          });
         },
         (err) => {
           console.log("Error : .getMe() : ", err);
@@ -333,9 +277,10 @@ export default function Dashboard({ code }) {
       })
       .then(
         (data) => {
-          // Add songs to created playlist
           let playlistID = data.body.id;
+          // Object destructure to return an array of just the track uri's
           let tracksArray = reccomendations.map(({ uri }) => uri);
+          // Add songs to created playlist
           spotifyApi.addTracksToPlaylist(playlistID, tracksArray);
         },
         (err) => {
@@ -350,6 +295,7 @@ export default function Dashboard({ code }) {
       spotifyApi.containsMySavedTracks(arrayOfIDs).then(
         (data) => {
           let isLikedArray = data.body;
+          console.log(isLikedArray);
           let markedArray = arrayOfTracks.map((track, indexofTrack) => {
             isLikedArray.map((value, indexOfLike) => {
               if (indexofTrack !== indexOfLike) return value;
@@ -374,7 +320,9 @@ export default function Dashboard({ code }) {
 
   async function buildTrackObjects(trackArray) {
     try {
+      // Promise returns original array but with like values
       const markedTrackArray = await markIfTracksAreLiked(trackArray);
+      // Start building the array of objects with specific track data
       const trackObjectsArray = markedTrackArray.map((track) => {
         // Finds the smallest album art to be used as a thumbnail
         let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
@@ -407,6 +355,7 @@ export default function Dashboard({ code }) {
           liked: track.liked,
         };
       });
+      // Returns Array of objects wrapped in a promise (So it can be processed asynchronously)
       return trackObjectsArray;
     } catch {
       return console.log("Error in buildTrackObjects");
