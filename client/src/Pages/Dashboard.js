@@ -115,7 +115,7 @@ export default function Dashboard({ code }) {
     setLoading(false);
     fillUserData();
     fillTopTrackData();
-    fillTopArtistData();
+    fillTopArtistData(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
   // Search useffect => when something is typed in the search input
@@ -189,40 +189,50 @@ export default function Dashboard({ code }) {
       .then(
         (data) => {
           let topTracks = data.body.items;
-          // Set Top Track State mapping through each track in the json response
-          setTopTracksData([
-            ...topTracks.map((track) => {
-              // Finds the smallest album art to be used as a thumbnail
-              let smallestAlbumArt = track.album.images.reduce((acc, cv) => {
-                if (cv.height <= acc.height) {
-                  acc = cv;
-                }
-                return acc;
-              });
-              // Converts TrackDuration in Millisecs to minute:second form
-              let trackDuration = (track.duration_ms / 1000 / 60)
-                .toString()
-                .split(".");
-              trackDuration[1] = Math.round(
-                parseFloat("0." + trackDuration[1]) * 60
-              ).toString();
-              // This adds a '0' to the front of the seconds if it returns a single digit
-              if (trackDuration[1] < 10) {
-                trackDuration[1] = "0" + trackDuration[1];
-              }
-              // Return an object for each track with useful data
-              return {
-                albumUrl: smallestAlbumArt.url,
-                albumName: track.album.name,
-                artist: track.artists[0].name,
-                trackName: track.name,
-                uri: track.uri,
-                id: track.id,
-                duration: trackDuration.join(":"),
-                type: track.type,
-              };
-            }),
-          ]);
+          markIfTracksAreLiked(topTracks).then(
+            (markedTopTracks) => {
+              setTopTracksData([
+                ...markedTopTracks.map((track) => {
+                  // Finds the smallest album art to be used as a thumbnail
+                  let smallestAlbumArt = track.album.images.reduce(
+                    (acc, cv) => {
+                      if (cv.height <= acc.height) {
+                        acc = cv;
+                      }
+                      return acc;
+                    }
+                  );
+                  // Converts TrackDuration in Millisecs to minute:second form
+                  let trackDuration = (track.duration_ms / 1000 / 60)
+                    .toString()
+                    .split(".");
+                  trackDuration[1] = Math.round(
+                    parseFloat("0." + trackDuration[1]) * 60
+                  ).toString();
+                  // This adds a '0' to the front of the seconds if it returns a single digit
+                  if (trackDuration[1] < 10) {
+                    trackDuration[1] = "0" + trackDuration[1];
+                  }
+                  // Return an object for each track with useful data
+                  return {
+                    albumUrl: smallestAlbumArt.url,
+                    albumName: track.album.name,
+                    artist: track.artists[0].name,
+                    trackName: track.name,
+                    uri: track.uri,
+                    id: track.id,
+                    duration: trackDuration.join(":"),
+                    type: track.type,
+                    liked: track.liked,
+                  };
+                }),
+              ]);
+            },
+            (err) => {
+              console.log(err);
+            }
+            // Set Top Track State mapping through each track in the json response
+          );
         },
         (err) => {
           console.log("Error in FillTopTracks() : ", err);
@@ -373,6 +383,34 @@ export default function Dashboard({ code }) {
           console.log("Error: addRecToPlaylist", err);
         }
       );
+  }
+
+  function markIfTracksAreLiked(arrayOfTracks) {
+    return new Promise((resolve, reject) => {
+      let arrayOfIDs = arrayOfTracks.map(({ id }) => id);
+      spotifyApi.containsMySavedTracks(arrayOfIDs).then(
+        (data) => {
+          let isLikedArray = data.body;
+          let markedArray = arrayOfTracks.map((track, indexofTrack) => {
+            isLikedArray.map((value, indexOfLike) => {
+              if (indexofTrack !== indexOfLike) return value;
+              if (value === true) track.liked = true;
+              if (value === false) track.liked = false;
+              return value;
+            });
+            return track;
+          });
+          if (markedArray) {
+            resolve(markedArray);
+          } else {
+            reject("Error: Marking Array with likes failed");
+          }
+        },
+        (err) => {
+          console.log("Error: addRecToPlaylist", err);
+        }
+      );
+    });
   }
 
   return loading ? (

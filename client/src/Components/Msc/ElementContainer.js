@@ -39,6 +39,7 @@ const TopTracks = styled.div`
 
 const ChildContainer = styled.div`
   height: 100%;
+  min-height: 200px;
   width: 100%;
   max-height: calc(100vh - 360px);
   overflow-y: auto;
@@ -97,7 +98,7 @@ export default function ElementContainer({
 
   // Repopulates the list of Tracks/Artists when expanded or time length changes
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (location.pathname === "/" || "") {
       triggerFillFunction(termState, 10);
     } else {
       triggerFillFunction(termState, 30);

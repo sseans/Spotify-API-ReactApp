@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { TiMediaPlay } from "react-icons/ti";
 import { BsPlus } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const TrackContainer = styled.div`
   width: 100%;
@@ -14,12 +15,22 @@ const TrackContainer = styled.div`
   margin: 3px 0;
   position: relative;
   cursor: pointer;
+  .heart-icon {
+    font-size: 1.3rem;
+    position: relative;
+    z-index: 2;
+    margin-right: 5px;
+    :hover {
+      transform: scale(1.15);
+      color: white;
+    }
+  }
   .icon {
     font-size: 1.5rem;
     position: relative;
     z-index: 2;
     :hover {
-      transform: scale(1.35);
+      transform: scale(1.25);
       color: white;
     }
   }
@@ -116,6 +127,11 @@ export default function Track({
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
+      {track.liked ? (
+        <AiFillHeart className="heart-icon" />
+      ) : (
+        <AiOutlineHeart className="heart-icon" />
+      )}
       {RenderPlusIcon && !track.showCross ? (
         <BsPlus
           onClick={(event) => {
