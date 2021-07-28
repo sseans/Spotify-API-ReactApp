@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
@@ -114,9 +114,17 @@ export default function Track({
   chooseTrack,
   addOneToRec,
   removeOneFromRec,
+  changeLikeStatusOfTrack,
 }) {
   const location = useLocation();
   const RenderPlusIcon = location.pathname === "/" ? true : false;
+  const [likeState, setLikeState] = useState(track.liked);
+
+  function likeStateSwitcher() {
+    changeLikeStatusOfTrack(!likeState, track);
+    setLikeState(!likeState);
+    track.liked = !likeState;
+  }
 
   return (
     <TrackContainer onClick={() => (chooseTrack ? chooseTrack(track) : null)}>
@@ -127,10 +135,22 @@ export default function Track({
         <TrackName>{track.trackName}</TrackName>
         <TrackArtist>{track.artist}</TrackArtist>
       </TrackNameContainer>
-      {track.liked ? (
-        <AiFillHeart className="heart-icon" />
+      {likeState ? (
+        <AiFillHeart
+          onClick={(event) => {
+            event.stopPropagation();
+            likeStateSwitcher();
+          }}
+          className="heart-icon"
+        />
       ) : (
-        <AiOutlineHeart className="heart-icon" />
+        <AiOutlineHeart
+          onClick={(event) => {
+            event.stopPropagation();
+            likeStateSwitcher();
+          }}
+          className="heart-icon"
+        />
       )}
       {RenderPlusIcon && !track.showCross ? (
         <BsPlus

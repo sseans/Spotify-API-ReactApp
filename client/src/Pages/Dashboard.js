@@ -295,7 +295,6 @@ export default function Dashboard({ code }) {
       spotifyApi.containsMySavedTracks(arrayOfIDs).then(
         (data) => {
           let isLikedArray = data.body;
-          console.log(isLikedArray);
           let markedArray = arrayOfTracks.map((track, indexofTrack) => {
             isLikedArray.map((value, indexOfLike) => {
               if (indexofTrack !== indexOfLike) return value;
@@ -362,6 +361,28 @@ export default function Dashboard({ code }) {
     }
   }
 
+  function changeLikeStatusOfTrack(desiredStatusOfTrack, trackData) {
+    if (desiredStatusOfTrack === true) {
+      spotifyApi.addToMySavedTracks([trackData.id]).then(
+        (data) => {
+          return;
+        },
+        (err) => {
+          console.log("Error: With changing Like status", err);
+        }
+      );
+    } else if (desiredStatusOfTrack === false) {
+      spotifyApi.removeFromMySavedTracks([trackData.id]).then(
+        (data) => {
+          return;
+        },
+        (err) => {
+          console.log("Error: With changing Like status", err);
+        }
+      );
+    }
+  }
+
   return loading ? (
     <ClipLoader color="#1ed760" loading={loading} size={150} />
   ) : (
@@ -400,6 +421,7 @@ export default function Dashboard({ code }) {
                         key={track.trackName + Math.floor(Math.random() * 1000)}
                         track={track}
                         chooseTrack={chooseTrack}
+                        changeLikeStatusOfTrack={changeLikeStatusOfTrack}
                       />
                     ))}
                   </ElementContainer>
@@ -444,6 +466,7 @@ export default function Dashboard({ code }) {
                           track={track}
                           chooseTrack={chooseTrack}
                           addOneToRec={addOneToRec}
+                          changeLikeStatusOfTrack={changeLikeStatusOfTrack}
                         />
                       ))}
                     </ElementContainer>
@@ -473,6 +496,7 @@ export default function Dashboard({ code }) {
                       addReccomendationsToPlaylist={
                         addReccomendationsToPlaylist
                       }
+                      changeLikeStatusOfTrack={changeLikeStatusOfTrack}
                     />
                   </SuggestionContainer>
                 </ContentContainer>

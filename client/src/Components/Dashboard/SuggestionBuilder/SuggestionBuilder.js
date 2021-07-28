@@ -143,6 +143,7 @@ export default function SuggestionBuilder({
   reccomendations,
   chooseTrack,
   addReccomendationsToPlaylist,
+  changeLikeStatusOfTrack,
 }) {
   return (
     <Container>
@@ -204,6 +205,7 @@ export default function SuggestionBuilder({
                   key={track.trackName + Math.floor(Math.random() * 1000)}
                   track={track}
                   chooseTrack={chooseTrack}
+                  changeLikeStatusOfTrack={changeLikeStatusOfTrack}
                 />
               ))}
             </ResultsInner>
