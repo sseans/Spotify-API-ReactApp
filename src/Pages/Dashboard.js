@@ -289,11 +289,14 @@ export default function Dashboard({ code }) {
       );
   }
 
+  // takes in original Array => checks if liked => adds like data => returns array in promise response
   function markIfTracksAreLiked(arrayOfTracks) {
     return new Promise((resolve, reject) => {
+      // Spotify only takes arrays of track id's to check if liked => returns array of booleans
       let arrayOfIDs = arrayOfTracks.map(({ id }) => id);
       spotifyApi.containsMySavedTracks(arrayOfIDs).then(
         (data) => {
+          // boolean array values are added to original track array objects of the same index
           let isLikedArray = data.body;
           let markedArray = arrayOfTracks.map((track, indexofTrack) => {
             isLikedArray.map((value, indexOfLike) => {
@@ -304,6 +307,7 @@ export default function Dashboard({ code }) {
             });
             return track;
           });
+          // Promise resolve or reject functionality => resolve response returns the array with new like values
           if (markedArray) {
             resolve(markedArray);
           } else {
