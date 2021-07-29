@@ -6,9 +6,14 @@ export default function useAuth(code) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:3001/login", {
-        code,
-      })
+      .post(
+        process.env.NODE_ENV === "production"
+          ? "https://musico-web-app.herokuapp.com/login"
+          : "http://localhost:3001/login",
+        {
+          code,
+        }
+      )
       .then((res) => {
         setAuthObject({
           accessToken: res.data.accessToken,
@@ -26,9 +31,14 @@ export default function useAuth(code) {
     if (!authObject.refreshToken || !authObject.expiresIn) return;
     const interval = setInterval(() => {
       axios
-        .post("http://localhost:3001/refresh", {
-          refreshToken: authObject.refreshToken,
-        })
+        .post(
+          process.env.NODE_ENV === "production"
+            ? "https://musico-web-app.herokuapp.com/refresh"
+            : "http://localhost:3001/refresh",
+          {
+            refreshToken: authObject.refreshToken,
+          }
+        )
         .then((res) => {
           setAuthObject({
             accessToken: res.data.accessToken,
