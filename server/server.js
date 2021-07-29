@@ -4,7 +4,7 @@ const SpotifyWebApi = require("spotify-web-api-node");
 
 const app = express();
 app.use(cors());
-// app.use(express.static("build"));
+app.use(express.static("build"));
 app.use(express.json());
 
 app.post("/refresh", (req, res) => {
